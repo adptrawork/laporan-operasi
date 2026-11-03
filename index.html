@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Operasi</title>
+
+    <!-- Library External (CDN) -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <!-- Custom CSS (Diekstrak dari file Anda) -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* CSS Asli untuk form Laporan Operasi */
+        .lop3 { 
+            --brand:#0f6b73; --brand-soft:#e1f1f2; --ink:#1c2b2f; --muted:#5d7176; --line:#d5dee0; --warn:#d92d3a; 
+            max-width:1080px; margin:0 auto; padding:10px 8px 70px; color:var(--ink); font-size:14px; text-align:left; 
+        }
+        .lop3 *, .lop3 *:before, .lop3 *:after { box-sizing:border-box; }
+        .lop3 h1 { font-size:20px; margin:0 0 12px; }
+        .lop3 [hidden] { display:none !important; }
+        .lop3 .patient { display:flex; flex-wrap:wrap; gap:10px 28px; margin:0 0 14px; padding:12px 16px; border-radius:6px; color:#fff; background:linear-gradient(120deg,#0f6b73,#2563eb 60%,#7c3aed); }
+        .lop3 .patient div { min-width:170px; }
+        .lop3 .patient dt { font-size:12px; opacity:.8; }
+        .lop3 .patient dd { margin:0; font-weight:600; }
+        .lop3 section { background:#fff; border:1px solid var(--line); border-top:4px solid var(--brand); border-radius:6px; margin-bottom:14px; }
+        .lop3 section > h2 { margin:0; padding:10px 16px; font-size:15px; background:var(--brand-soft); border-bottom:1px solid var(--brand); }
+        .lop3 section > h2 small { display:block; font-weight:400; font-size:12px; font-style:italic; opacity:.7; }
+        .lop3 section[data-c="1"] { --brand:#0f8a94; --brand-soft:#dff3f4; }
+        .lop3 section[data-c="2"] { --brand:#2563eb; --brand-soft:#e3ecfd; }
+        .lop3 section[data-c="3"] { --brand:#7c3aed; --brand-soft:#eee6fd; }
+        .lop3 section[data-c="4"] { --brand:#db2777; --brand-soft:#fce4ef; }
+        .lop3 section[data-c="5"] { --brand:#ea580c; --brand-soft:#fdeadc; }
+        .lop3 section[data-c="6"] { --brand:#059669; --brand-soft:#dcf5ea; }
+        .lop3 .body { padding:14px 16px; display:flex; flex-wrap:wrap; gap:12px 24px; }
+        .lop3 .body > .f, .lop3 .body > .col { flex:1 1 320px; min-width:0; }
+        .lop3 .body > .full { flex-basis:100%; }
+        .lop3 .f { display:flex; flex-direction:column; gap:4px; }
+        .lop3 .col { display:flex; flex-direction:column; gap:12px; }
+        .lop3 label.lbl, .lop3 .f > label, .lop3 .lbl { font-size:13px; font-weight:600; margin:0; float:none; width:auto; display:block; }
+        .lop3 .req:after { content:" *"; color:var(--warn); }
+        .lop3 input[type=text], .lop3 input[type=date], .lop3 input[type=time], .lop3 input[type=number], .lop3 select, .lop3 textarea { width:100%; max-width:none; font:inherit; padding:7px 9px; border:1px solid var(--line); border-radius:5px; background:#fff; }
+        .lop3 textarea { min-height:84px; resize:vertical; }
+        .lop3 input:disabled, .lop3 textarea:disabled { background:#f1f4fb; cursor:not-allowed; }
+        .lop3 .search { position:relative; }
+        .lop3 .search input[type=text] { padding-right:30px; }
+        .lop3 .search:after { content:"\1F50D"; position:absolute; right:8px; top:6px; font-size:13px; opacity:.45; pointer-events:none; }
+        .lop3 .group { display:flex; flex-wrap:wrap; gap:6px; }
+        .lop3 .chip { position:relative; display:inline-block; margin:0; float:none; width:auto; }
+        .lop3 .chip input { position:absolute; opacity:0; left:0; top:0; width:100%; height:100%; margin:0; cursor:pointer; }
+        .lop3 .chip span { display:inline-block; padding:5px 14px; border:1px solid var(--line); border-radius:999px; background:#fff; font-size:13px; }
+        .lop3 .chip input:checked + span { background:var(--brand); border-color:var(--brand); color:#fff; }
+        .lop3 .chip input.risk:checked + span { background:var(--warn); border-color:var(--warn); }
+        .lop3 .sub { flex-basis:100%; font-size:12px; font-weight:700; color:var(--brand); border-bottom:1px solid var(--line); padding-bottom:3px; }
+        .lop3 .subrow { display:flex; flex-wrap:wrap; gap:12px; padding:10px; border-radius:6px; background:var(--brand-soft); }
+        .lop3 .subrow > .f { flex:1 1 200px; }
+        .lop3 .timegrid { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-start; }
+        .lop3 .timegrid > .f { flex:1 1 120px; }
+        .lop3 .duration { background:var(--brand-soft); border-radius:5px; padding:6px 12px; }
+        .lop3 .duration b { font-size:18px; margin-right:6px; }
+        .lop3 .unit { display:flex; align-items:center; gap:8px; }
+        .lop3 .unit input { max-width:130px; }
+        .lop3 .drow { flex:1 1 320px; }
+        .lop3 .drow .search { display:flex; gap:6px; }
+        .lop3 .drow .search:after { display:none; }
+        .lop3 .drow .search input[type=text] { flex:1; padding-right:9px; }
+        .lop3 .dlist { display:flex; flex-wrap:wrap; gap:12px 24px; margin-bottom:10px; }
+        .lop3 .sethead { display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; margin-bottom:10px; padding:10px 16px; border-radius:6px; color:#fff; background:linear-gradient(120deg,#334155,#4f46e5); }
+        .lop3 .sethead select { width:auto; min-width:220px; color:var(--ink); }
+        .lop3 .delset { margin-left:auto; }
+        .lop3 .btn3 { padding:7px 16px; font:inherit; font-weight:600; border:1px solid var(--line); border-radius:5px; background:#fff; color:var(--ink); cursor:pointer; }
+        .lop3 .btn3.ghost { color:#4f46e5; border-color:#4f46e5; }
+        .lop3 .btn3.ghost:disabled { opacity:.45; cursor:not-allowed; }
+        .lop3 .btn3.rm { color:var(--warn); border-color:var(--warn); background:#fff; }
+        .lop3 .btn3.primary { color:#fff; border:0; background:linear-gradient(120deg,#0f8a94,#2563eb); }
+        .lop3 .bar { position:fixed; left:0; right:0; bottom:0; z-index:50; display:flex; justify-content:flex-end; gap:10px; padding:10px 16px; background:#fff; border-top:1px solid var(--line); box-shadow:0 -2px 8px rgba(20,30,60,.08); }
+        .lop3 .addrow { margin-bottom:14px; }
+    </style>
+</head>
+<body>
+
+    <div class="lop3">
+        <h1>Laporan Operasi</h1>
+        <form id="form-data" onsubmit="return false">
+            <input type="hidden" name="id_permintaan_operasi" value="101980">
+            <input type="hidden" name="id_laporan" value="67786">
+
+            <dl class="patient">
+                <div><dt>No. RM</dt><dd>257076</dd></div>
+                <div><dt>Nama</dt><dd>DIAN ADI </dd></div>
+                <div><dt>Tgl lahir</dt><dd>12/04/1964</dd></div>
+                <div><dt>No. registrasi</dt><dd>2610140012</dd></div>
+                <div><dt>Tanggal masuk</dt><dd>14/10/2026</dd></div>
+                <div><dt>Ruang rawat</dt><dd>Bed Fisioterapi Fisioterapi</dd></div>
+            </dl>
+
+            <section data-c="1">
+                <h2>Tim operasi</h2>
+                <div class="body">
+                    <div class="full">
+                        <div class="dlist" id="dlist"></div>
+                        <button type="button" class="btn3 ghost" id="addDpjp">+ Tambah DPJP bedah/operator</button>
+                    </div>
+                    <div class="f"><label>Dokter anestesi</label><div class="search"><input type="text" class="noupper ac" name="asisten" data-opsi="nakes_admisi3" data-id="id_asisten" value="Aria Puspita sari, Am.keb" autocomplete="off"><input type="hidden" name="id_asisten" id="id_asisten" value="1918528"></div></div>
+                    <div class="f"><label>Asisten I</label><div class="search"><input type="text" class="noupper ac" name="asisten2" data-opsi="nakes_admisi3" data-id="id_asisten2" value="Dian Mandasari, Am.Kep" autocomplete="off"><input type="hidden" name="id_asisten2" id="id_asisten2" value="2323562"></div></div>
+                    <div class="f"><label>Asisten II</label><div class="search"><input type="text" class="noupper ac" name="bedah2" data-opsi="nakes_admisi3" data-id="id_bedah2" value="DEWI PUSPITA SARI,AMD.KEP" autocomplete="off"><input type="hidden" name="id_bedah2" id="id_bedah2" value="1918491"></div></div>
+                    <div class="f"><label>Perawat instrumen 1</label><div class="search"><input type="text" class="noupper ac" name="perawat" data-opsi="nakes_admisi3" data-id="id_perawat" value="Aria Puspita sari, Am.keb" autocomplete="off"><input type="hidden" name="id_perawat" id="id_perawat" value="1918528"></div></div>
+                    <div class="f"><label>Perawat instrumen 2</label><div class="search"><input type="text" class="noupper ac" name="instrumen" data-opsi="nakes_admisi3" data-id="id_instrumen" value="Aria Puspita sari, Am.keb" autocomplete="off"><input type="hidden" name="id_instrumen" id="id_instrumen" value="1918528"></div></div>
+                    <div class="f"><label>Perawat sirkuler 1</label><div class="search"><input type="text" class="noupper ac" name="perawat_sirkuler" data-opsi="nakes_admisi2" data-id="id_perawat_sirkuler" value="DEWI PUSPITA SARI,AMD.KEP" autocomplete="off"><input type="hidden" name="id_perawat_sirkuler" id="id_perawat_sirkuler" value="1918491"></div></div>
+                    <div class="f"><label>Perawat sirkuler 2</label><div class="search"><input type="text" class="noupper ac" name="anestesi2" data-opsi="nakes_admisi_bak" data-id="id_anestesi2" value="Aria Puspita sari, Am.keb" autocomplete="off"><input type="hidden" name="id_anestesi2" id="id_anestesi2" value="1918528"></div></div>
+                </div>
+            </section>
+
+            <section data-c="2">
+                <h2>Diagnosis dan waktu</h2>
+                <div class="body">
+                    <div class="f"><label>Diagnosis pra bedah</label><textarea name="diagnosis_pra_bedah">asd</textarea></div>
+                    <div class="f"><label class="req">Tanggal bedah</label><input type="date" name="tanggal_bedah" id="tgl" value="2026-11-03"></div>
+                    <div class="f"><label>Diagnosis pasca bedah</label><textarea name="diagnosis_pasca_bedah">asdasd</textarea></div>
+                    <div class="timegrid">
+                        <div class="f"><label class="req">Jam mulai</label><input type="time" name="jam_mulai" id="mulai" value="08:46"></div>
+                        <div class="f"><label class="req">Jam selesai</label><input type="time" name="jam_selesai" id="selesai" value="09:47"></div>
+                        <div class="f"><span class="lbl">Waktu bedah</span><div class="duration"><b id="dur">-</b><span>menit</span></div></div>
+                    </div>
+                </div>
+            </section>
+
+            <section data-c="3">
+                <h2>Jenis operasi</h2>
+                <div class="body">
+                    <div class="f"><label>Nama macam operasi</label><textarea name="nama_operasi">asdasd</textarea></div>
+                    <div class="f">
+                        <label class="req">Klasifikasi / jenis operasi</label>
+                        <select name="jenis_operasi">
+                            <option value="">Pilih klasifikasi</option>
+                            <option value="emergency" selected>Emergency</option>
+                            <option value="poliklinik">Poliklinik</option>
+                            <option value="efektif">Elektif</option>
+                        </select>
+                        <div class="group" style="margin-top:6px">
+                            <label class="chip"><input type="radio" name="golongan_operasi" value="minor" checked><span>Kecil</span></label>
+                            <label class="chip"><input type="radio" name="golongan_operasi" value="medium"><span>Sedang</span></label>
+                            <label class="chip"><input type="radio" name="golongan_operasi" value="mayor"><span>Besar</span></label>
+                            <label class="chip"><input type="radio" name="golongan_operasi" value="khusus"><span>Khusus</span></label>					
+                        </div>
+                    </div>
+                    <div class="f"><label>Jaringan yang dieksisi</label><textarea name="jaringan_eksisi">asdsad</textarea></div>
+                    <div class="f">
+                        <span class="lbl req">Jenis anestesi</span>
+                        <div class="group">
+                            <label class="chip"><input type="radio" name="jenis_anestesi" value="Lokal" checked><span>Lokal</span></label>
+                            <label class="chip"><input type="radio" name="jenis_anestesi" value="Umum"><span>Umum</span></label>
+                            <label class="chip"><input type="radio" name="jenis_anestesi" value="Regional"><span>Regional</span></label>					
+                        </div>
+                        <span class="lbl req" style="margin-top:8px">Operasi pasien kanker?</span>
+                        <div class="group">
+                            <label class="chip"><input type="radio" name="flag_kanker" value="Y" class="risk" checked><span>Ya</span></label>						
+                            <label class="chip"><input type="radio" name="flag_kanker" value="N"><span>Tidak</span></label>
+                        </div>
+                        <span class="lbl req" style="margin-top:8px">Operasi syaraf?</span>
+                        <div class="group">
+                            <label class="chip"><input type="radio" name="flag_syaraf" value="Y" class="risk" checked><span>Ya</span></label>						
+                            <label class="chip"><input type="radio" name="flag_syaraf" value="N"><span>Tidak</span></label>
+                        </div>
+                        <div class="group" id="jenisSyaraf" style="margin-top:6px">
+                            <label class="chip"><input type="radio" name="jenis_syaraf" value="STROKE"><span>Stroke</span></label>						
+                            <label class="chip"><input type="radio" name="jenis_syaraf" value="NON" checked><span>Non stroke</span></label>
+                        </div>
+                    </div>
+
+                    <div class="sub">Spesimen dan implan</div>
+                    <div class="col">
+                        <div class="f"><span class="lbl">Dikirim untuk</span>
+                            <div class="group">
+                                <label class="chip"><input type="radio" name="kirim_untuk" value="Pa" checked><span>PA</span></label>							
+                                <label class="chip"><input type="radio" name="kirim_untuk" value="Kultur"><span>Kultur</span></label>						
+                            </div>
+                        </div>
+                        <div class="f"><span class="lbl">Pemeriksaan</span>
+                            <div class="group">
+                                <label class="chip"><input type="radio" name="pemeriksaan" value="N" checked><span>Tidak</span></label>							
+                                <label class="chip"><input type="radio" name="pemeriksaan" value="Y"><span>Ya</span></label>						
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="f"><span class="lbl">Penggunaan implan</span>
+                            <div class="group">
+                                <label class="chip"><input type="radio" name="penggunaan_implan" value="N" checked><span>Tidak</span></label>							
+                                <label class="chip"><input type="radio" name="penggunaan_implan" value="Y"><span>Ya</span></label>						
+                            </div>
+                        </div>
+                        <div class="subrow" id="depImplan" hidden>
+                            <div class="f"><label>Jenis implan</label><input type="text" name="jenis_implan" value="" disabled></div>
+                            <div class="f"><label>Nomor implan</label><input type="text" name="nomor_implan" value="" disabled></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div id="sets"></div>
+            <div class="addrow"><button type="button" class="btn3 ghost" id="addSet" hidden></button></div>
+
+            <div class="bar">
+                <button type="button" class="btn3" onclick="history.back()">Batal</button>
+                <button type="button" class="btn3 primary" id="btnSimpan">Simpan</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Custom JS (Diekstrak dari file Anda) -->
+    <script>
+        var LOP3 = {
+            // Data dummy ini diambil dari kode Anda
+            init: {
+                "dpjp":[
+                    {"id":"2323145","nama":"dr. Mutya Dyah Arumsari, Sp.A"},
+                    {"id":"2323137","nama":"dr. Maya Sari"},
+                    {"id":"2335766","nama":"Dr. Budi Setiawan, Sp.KJ"}
+                ],
+                "sets":[
+                    {"urutan":1,"uraian":"input text","komp":"Y","komp_ket":"input text","patol":"Y","jenis_jaringan":"input text","perdarahan":"22","transfusi":"22","drain":"Y"},
+                    {"urutan":2,"uraian":"input text","komp":"Y","komp_ket":"input text","patol":"Y","jenis_jaringan":"input text","perdarahan":12,"transfusi":12,"drain":"Y"}
+                ]
+            },
+            search: "/stagingmorbis/admisi/search?opsi=", // Akan gagal jika tidak ada backend, tapi form tetap bisa diisi
+            control: "/stagingmorbis/admisi/report_operasi_v3/control"
+        };
+
+        $(function () {
+            var uid = 0, sid = 0;
+            var $dlist = $('#dlist'), $sets = $('#sets');
+
+            function esc(s) {
+                return $('<div/>').text(s === null || s === undefined ? '' : s).html().replace(/"/g, '&quot;');
+            }
+
+            // Autocomplete nakes: input[data-id] -> hidden id
+            function bindAc($in, opsi, idSel) {
+                // Autocomplete dimatikan sementara karena tidak ada backend
+                // $in.autocomplete(...)
+                $in.data('picked', $in.val());
+                $in.keyup(function () {
+                    if ($(this).val() != $(this).data('picked')) {
+                        $(idSel).val('');
+                    }
+                });
+            }
+
+            $('input.ac').each(function () {
+                bindAc($(this), $(this).attr('data-opsi'), '#' + $(this).attr('data-id'));
+            });
+
+            // ---- Waktu bedah
+            function toMin(t) { return parseInt(t.slice(0, 2), 10) * 60 + parseInt(t.slice(3, 5), 10); }
+            function dur() {
+                var a = $('#mulai').val(), b = $('#selesai').val();
+                if (!a || !b) { $('#dur').text('-'); return; }
+                var d = toMin(b) - toMin(a);
+                if (d < 0) { d += 1440; }
+                $('#dur').text(d);
+            }
+            $('#mulai, #selesai').bind('change keyup', dur);
+            dur();
+
+            // ---- Toggle sederhana
+            function setHidden($el, hide) {
+                if (hide) { $el.attr('hidden', 'hidden'); } else { $el.removeAttr('hidden'); }
+            }
+            $('input[name=flag_syaraf]').click(function () {
+                setHidden($('#jenisSyaraf'), $('input[name=flag_syaraf]:checked').val() != 'Y');
+            });
+            $('input[name=penggunaan_implan]').click(function () {
+                var ya = $('input[name=penggunaan_implan]:checked').val() == 'Y';
+                setHidden($('#depImplan'), !ya);
+                var $f = $('#depImplan input');
+                if (ya) { $f.removeAttr('disabled'); } else { $f.attr('disabled', 'disabled').val(''); }
+            });
+
+            // ---- DPJP
+            function rows() { return $dlist.children('.drow'); }
+            function sets() { return $sets.children('.set'); }
+            function lblOf(i) { return i == 0 ? 'DPJP bedah/operator' : 'DPJP bedah/operator ' + (i + 1); }
+
+            function addDpjp(d) {
+                var id = ++uid;
+                var $r = $('<div class="f drow" data-uid="' + id + '">' +
+                    '<label></label><div class="search">' +
+                    '<input type="text" class="noupper" name="dpjp_nama[]" autocomplete="off" value="' + esc(d ? d.nama : '') + '">' +
+                    '<input type="hidden" name="dpjp_id[]" value="' + esc(d ? d.id : '') + '">' +
+                    '<button type="button" class="btn3 rm">Hapus</button></div></div>');
+                $dlist.append($r);
+                bindAc($r.find('input[type=text]'), 'nakes_admisi', $r.find('input[type=hidden]'));
+                $r.find('input[type=text]').keyup(refreshOps);
+                $r.find('.rm').click(function () { removeDpjp($r); });
+                relabel();
+                return $r;
+            }
+
+            function relabel() {
+                rows().each(function (i) {
+                    $(this).find('label').text(lblOf(i)).attr('class', i == 0 ? 'req' : '');
+                    $(this).find('.rm')[i == 0 ? 'hide' : 'show']();
+                });
+                refreshOps();
+            }
+
+            function hasContent($s) {
+                var ya = false;
+                $s.find('textarea, input[type=text]').each(function () { if ($(this).val()) { ya = true; } });
+                return ya;
+            }
+
+            function removeDpjp($r) {
+                var u = String($r.attr('data-uid'));
+                var $mine = sets().filter(function () { return $(this).find('.opsel').val() == u; });
+                var isi = false;
+                $mine.each(function () { if (hasContent($(this))) { isi = true; } });
+                if (isi && !confirm('Set uraian milik operator ini akan ikut dihapus. Lanjutkan?')) { return; }
+                $mine.remove();
+                $r.remove();
+                if (sets().length == 0) { addSet(rows().eq(0).attr('data-uid')); }
+                relabel();
+                renumberSets();
+            }
+
+            // ---- Set uraian
+            function chips(name, val, risk) {
+                return '<label class="chip"><input type="radio" name="' + name + '" value="N"' + (val != 'Y' ? ' checked' : '') + '><span>Tidak</span></label>' +
+                    '<label class="chip"><input type="radio" name="' + name + '" value="Y"' + (val == 'Y' ? ' checked' : '') + (risk ? ' class="risk"' : '') + '><span>Ya</span></label>';
+            }
+
+            function setHtml(n, s) {
+                var p = 'set[' + n + ']';
+                return '<div class="set" data-sid="' + n + '">' +
+                    '<div class="sethead" hidden><b class="setno"></b><label>Operator <select class="opsel"></select></label>' +
+                    '<button type="button" class="btn3 rm delset">Hapus set</button></div>' +
+                    '<input type="hidden" name="' + p + '[urutan]" class="urutan">' +
+                    '<section data-c="4"><h2>Uraian pembedahan<small>Uraikan lengkap tindakan dan hal yang ditemukan pada pembedahan</small></h2>' +
+                    '<div class="body"><div class="f full"><textarea name="' + p + '[uraian]" style="min-height:190px">' + esc(s.uraian) + '</textarea></div></div></section>' +
+                    '<section data-c="5"><h2>Komplikasi<small>Yang didapatkan saat tindakan pembedahan</small></h2>' +
+                    '<div class="body"><div class="f full"><span class="lbl">Ada komplikasi?</span><div class="group r-komp">' + chips(p + '[komp]', s.komp, true) + '</div></div>' +
+                    '<div class="f full dep-komp"><label>Keterangan komplikasi</label><textarea name="' + p + '[komp_ket]">' + esc(s.komp_ket) + '</textarea></div></div></section>' +
+                    '<section data-c="6"><h2>Pemeriksaan fungsi sistem organ</h2><div class="body">' +
+                    '<div class="f"><span class="lbl">Jaringan ke patologi</span><div class="group r-patol">' + chips(p + '[patol]', s.patol, false) + '</div></div>' +
+                    '<div class="f dep-patol"><label>Jenis jaringan</label><input type="text" name="' + p + '[jenis_jaringan]" value="' + esc(s.jenis_jaringan) + '"></div>' +
+                    '<div class="f"><label>Perkiraan perdarahan</label><div class="unit"><input type="number" min="0" name="' + p + '[perdarahan]" value="' + esc(s.perdarahan) + '"><em>cc</em></div></div>' +
+                    '<div class="f"><label>Transfusi darah</label><div class="unit"><input type="number" min="0" name="' + p + '[transfusi]" value="' + esc(s.transfusi) + '"><em>cc</em></div></div>' +
+                    '<div class="f"><span class="lbl">Pemakaian drain</span><div class="group">' +
+                    '<label class="chip"><input type="radio" name="' + p + '[drain]" value="N"' + (s.drain != 'Y' ? ' checked' : '') + '><span>Tidak ada</span></label>' +
+                    '<label class="chip"><input type="radio" name="' + p + '[drain]" value="Y"' + (s.drain == 'Y' ? ' checked' : '') + '><span>Ada</span></label></div></div>' +
+                    '</div></section></div>';
+            }
+
+            function syncSet($s) {
+                $s.find('.dep-komp')[$s.find('.r-komp input:checked').val() == 'Y' ? 'show' : 'hide']();
+                $s.find('.dep-patol')[$s.find('.r-patol input:checked').val() == 'Y' ? 'show' : 'hide']();
+            }
+
+            function freeUid() {
+                var used = {};
+                sets().each(function () { used[$(this).find('.opsel').val()] = true; });
+                var ret = null;
+                rows().each(function () { var u = $(this).attr('data-uid'); if (!ret && !used[u]) { ret = u; } });
+                return ret;
+            }
+
+            function addSet(opUid, data) {
+                var s = data || { komp: 'N', patol: 'N', drain: 'N' };
+                var n = ++sid;
+                var $s = $(setHtml(n, s));
+                $sets.append($s);
+                $s.data('opUid', opUid);
+                $s.find('input[type=radio]').click(function () { syncSet($s); });
+                $s.find('.delset').click(function () { $s.remove(); renumberSets(); refreshOps(); });
+                syncSet($s);
+                renumberSets();
+                refreshOps();
+                return $s;
+            }
+
+            function renumberSets() {
+                sets().each(function (i) {
+                    $(this).find('.setno').text('Set ' + (i + 1));
+                    $(this).find('.delset')[i == 0 ? 'hide' : 'show']();
+                });
+            }
+
+            function refreshOps() {
+                var $r = rows();
+                sets().each(function (si) {
+                    var $sel = $(this).find('.opsel'), want = $sel.val() || $(this).data('opUid');
+                    var opts = '';
+                    $r.each(function (i) {
+                        var nm = $.trim($(this).find('input[type=text]').val());
+                        opts += '<option value="' + $(this).attr('data-uid') + '">' + esc(lblOf(i) + (nm ? ': ' + nm : '')) + '</option>';
+                    });
+                    $sel.html(opts);
+                    var ok = false;
+                    $r.each(function () { if ($(this).attr('data-uid') == want) { ok = true; } });
+                    $sel.val(ok ? want : $r.eq(Math.min(si, $r.length - 1)).attr('data-uid'));
+                });
+                var multi = $r.length > 1;
+                $('.sethead').each(function () { if (multi) { $(this).removeAttr('hidden'); } else { $(this).attr('hidden', 'hidden'); } });
+                var $b = $('#addSet');
+                if (multi) { $b.removeAttr('hidden'); } else { $b.attr('hidden', 'hidden'); }
+                $b.text('+ Tambah set uraian (' + sets().length + '/' + $r.length + ')');
+                if (sets().length >= $r.length) { $b.attr('disabled', 'disabled'); } else { $b.removeAttr('disabled'); }
+            }
+
+            $('#addDpjp').click(function () { addDpjp(); });
+            $('#addSet').click(function () { if (sets().length < rows().length) { addSet(freeUid()); } });
+            $sets.delegate('.opsel', 'change', function () { $(this).closest('.set').data('opUid', $(this).val()); });
+
+            // ---- Init dari data tersimpan
+            var st = LOP3.init, i;
+            for (i = 0; i < st.dpjp.length; i++) { addDpjp(st.dpjp[i]); }
+            for (i = 0; i < st.sets.length; i++) {
+                var pos = parseInt(st.sets[i].urutan, 10) - 1;
+                addSet(rows().eq(pos < rows().length ? pos : 0).attr('data-uid'), st.sets[i]);
+            }
+
+            // ---- Simpan (Mockup)
+            function validate() {
+                var f = $('#form-data'), msg = null;
+                if (!$('#tgl').val()) { msg = 'Tanggal bedah belum diisi'; }
+                else if (!$('#mulai').val()) { msg = 'Jam mulai belum diisi'; }
+                else if (!$('#selesai').val()) { msg = 'Jam selesai belum diisi'; }
+                else if (!f.find('select[name=jenis_operasi]').val() || !f.find('input[name=golongan_operasi]:checked').val()) { msg = 'Klasifikasi/jenis operasi belum lengkap diisi'; }
+                else if (!f.find('input[name=jenis_anestesi]:checked').val()) { msg = 'Jenis anestesi belum diisi'; }
+                else if (!f.find('input[name=flag_kanker]:checked').val()) { msg = 'Operasi pasien kanker belum dipilih'; }
+                else if (!f.find('input[name=flag_syaraf]:checked').val()) { msg = 'Operasi syaraf belum dipilih'; }
+                else if (f.find('input[name=flag_syaraf]:checked').val() == 'Y' && !f.find('input[name=jenis_syaraf]:checked').val()) { msg = 'Jenis syaraf belum dipilih'; }
+                rows().each(function (i) {
+                    if (!msg && !$(this).find('input[type=hidden]').val()) { msg = lblOf(i) + ' belum dipilih dari daftar'; }
+                });
+                var seen = {};
+                sets().each(function () {
+                    var u = $(this).find('.opsel').val();
+                    if (!msg && seen[u]) { msg = 'Satu operator hanya boleh memiliki satu set uraian'; }
+                    seen[u] = true;
+                });
+                return msg;
+            }
+
+            $('#btnSimpan').click(function () {
+                var msg = validate();
+                if (msg) { toastr.warning(msg); return; }
+                
+                swal({
+                    title: 'Apakah Anda Yakin Isian \n Form Sudah Sesuai ?',
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true
+                }).then(function (action) {
+                    if (!action) { return; }
+                    
+                    // Simulasi Proses AJAX
+                    toastr.success('Data berhasil disimulasikan tersimpan!', 'Sukses', { timeOut: 3000 });
+                    console.log($('#form-data').serialize());
+                });
+            });
+        });
+    </script>
+</body>
+</html>
