@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Operasi</title>
+    <title>Laporan Operasi - RSUD H. Abdul Manap</title>
 
     <!-- Library External (CDN) -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -13,217 +13,497 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+    <!-- Library QRCode -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-    <!-- Custom CSS (Diekstrak dari file Anda) -->
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 20px;
+        :root {
+            --primary: #4D6BFE; 
+            --primary-hover: #3b55d9;
+            --danger: #dc2626; 
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #94a3b8;
+            --font-base: 16px;
+            --radius: 8px;
         }
 
-        /* CSS Asli untuk form Laporan Operasi */
-        .lop3 { 
-            --brand:#0f6b73; --brand-soft:#e1f1f2; --ink:#1c2b2f; --muted:#5d7176; --line:#d5dee0; --warn:#d92d3a; 
-            max-width:1080px; margin:0 auto; padding:10px 8px 70px; color:var(--ink); font-size:14px; text-align:left; 
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-size: var(--font-base);
+            line-height: 1.5;
+            margin: 0;
+            padding: 20px 20px 90px 20px;
         }
-        .lop3 *, .lop3 *:before, .lop3 *:after { box-sizing:border-box; }
-        .lop3 h1 { font-size:20px; margin:0 0 12px; }
-        .lop3 [hidden] { display:none !important; }
-        .lop3 .patient { display:flex; flex-wrap:wrap; gap:10px 28px; margin:0 0 14px; padding:12px 16px; border-radius:6px; color:#fff; background:linear-gradient(120deg,#0f6b73,#2563eb 60%,#7c3aed); }
-        .lop3 .patient div { min-width:170px; }
-        .lop3 .patient dt { font-size:12px; opacity:.8; }
-        .lop3 .patient dd { margin:0; font-weight:600; }
-        .lop3 section { background:#fff; border:1px solid var(--line); border-top:4px solid var(--brand); border-radius:6px; margin-bottom:14px; }
-        .lop3 section > h2 { margin:0; padding:10px 16px; font-size:15px; background:var(--brand-soft); border-bottom:1px solid var(--brand); }
-        .lop3 section > h2 small { display:block; font-weight:400; font-size:12px; font-style:italic; opacity:.7; }
-        .lop3 section[data-c="1"] { --brand:#0f8a94; --brand-soft:#dff3f4; }
-        .lop3 section[data-c="2"] { --brand:#2563eb; --brand-soft:#e3ecfd; }
-        .lop3 section[data-c="3"] { --brand:#7c3aed; --brand-soft:#eee6fd; }
-        .lop3 section[data-c="4"] { --brand:#db2777; --brand-soft:#fce4ef; }
-        .lop3 section[data-c="5"] { --brand:#ea580c; --brand-soft:#fdeadc; }
-        .lop3 section[data-c="6"] { --brand:#059669; --brand-soft:#dcf5ea; }
-        .lop3 .body { padding:14px 16px; display:flex; flex-wrap:wrap; gap:12px 24px; }
-        .lop3 .body > .f, .lop3 .body > .col { flex:1 1 320px; min-width:0; }
-        .lop3 .body > .full { flex-basis:100%; }
-        .lop3 .f { display:flex; flex-direction:column; gap:4px; }
-        .lop3 .col { display:flex; flex-direction:column; gap:12px; }
-        .lop3 label.lbl, .lop3 .f > label, .lop3 .lbl { font-size:13px; font-weight:600; margin:0; float:none; width:auto; display:block; }
-        .lop3 .req:after { content:" *"; color:var(--warn); }
-        .lop3 input[type=text], .lop3 input[type=date], .lop3 input[type=time], .lop3 input[type=number], .lop3 select, .lop3 textarea { width:100%; max-width:none; font:inherit; padding:7px 9px; border:1px solid var(--line); border-radius:5px; background:#fff; }
-        .lop3 textarea { min-height:84px; resize:vertical; }
-        .lop3 input:disabled, .lop3 textarea:disabled { background:#f1f4fb; cursor:not-allowed; }
-        .lop3 .search { position:relative; }
-        .lop3 .search input[type=text] { padding-right:30px; }
-        .lop3 .search:after { content:"\1F50D"; position:absolute; right:8px; top:6px; font-size:13px; opacity:.45; pointer-events:none; }
-        .lop3 .group { display:flex; flex-wrap:wrap; gap:6px; }
-        .lop3 .chip { position:relative; display:inline-block; margin:0; float:none; width:auto; }
-        .lop3 .chip input { position:absolute; opacity:0; left:0; top:0; width:100%; height:100%; margin:0; cursor:pointer; }
-        .lop3 .chip span { display:inline-block; padding:5px 14px; border:1px solid var(--line); border-radius:999px; background:#fff; font-size:13px; }
-        .lop3 .chip input:checked + span { background:var(--brand); border-color:var(--brand); color:#fff; }
-        .lop3 .chip input.risk:checked + span { background:var(--warn); border-color:var(--warn); }
-        .lop3 .sub { flex-basis:100%; font-size:12px; font-weight:700; color:var(--brand); border-bottom:1px solid var(--line); padding-bottom:3px; }
-        .lop3 .subrow { display:flex; flex-wrap:wrap; gap:12px; padding:10px; border-radius:6px; background:var(--brand-soft); }
-        .lop3 .subrow > .f { flex:1 1 200px; }
-        .lop3 .timegrid { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-start; }
-        .lop3 .timegrid > .f { flex:1 1 120px; }
-        .lop3 .duration { background:var(--brand-soft); border-radius:5px; padding:6px 12px; }
-        .lop3 .duration b { font-size:18px; margin-right:6px; }
-        .lop3 .unit { display:flex; align-items:center; gap:8px; }
-        .lop3 .unit input { max-width:130px; }
-        .lop3 .drow { flex:1 1 320px; }
-        .lop3 .drow .search { display:flex; gap:6px; }
-        .lop3 .drow .search:after { display:none; }
-        .lop3 .drow .search input[type=text] { flex:1; padding-right:9px; }
-        .lop3 .dlist { display:flex; flex-wrap:wrap; gap:12px 24px; margin-bottom:10px; }
-        .lop3 .sethead { display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; margin-bottom:10px; padding:10px 16px; border-radius:6px; color:#fff; background:linear-gradient(120deg,#334155,#4f46e5); }
-        .lop3 .sethead select { width:auto; min-width:220px; color:var(--ink); }
-        .lop3 .delset { margin-left:auto; }
-        .lop3 .btn3 { padding:7px 16px; font:inherit; font-weight:600; border:1px solid var(--line); border-radius:5px; background:#fff; color:var(--ink); cursor:pointer; }
-        .lop3 .btn3.ghost { color:#4f46e5; border-color:#4f46e5; }
-        .lop3 .btn3.ghost:disabled { opacity:.45; cursor:not-allowed; }
-        .lop3 .btn3.rm { color:var(--warn); border-color:var(--warn); background:#fff; }
-        .lop3 .btn3.primary { color:#fff; border:0; background:linear-gradient(120deg,#0f8a94,#2563eb); }
-        .lop3 .bar { position:fixed; left:0; right:0; bottom:0; z-index:50; display:flex; justify-content:flex-end; gap:10px; padding:10px 16px; background:#fff; border-top:1px solid var(--line); box-shadow:0 -2px 8px rgba(20,30,60,.08); }
-        .lop3 .addrow { margin-bottom:14px; }
+
+        .form-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* --- SISTEM GRID RESPONSIF --- */
+        .grid { display: grid; gap: 20px; align-items: start; }
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+        .col-2 { grid-column: span 2; }
+        .col-3 { grid-column: span 3; }
+        .col-4 { grid-column: span 4; }
+
+        @media (max-width: 1024px) {
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .grid-3 { grid-template-columns: repeat(2, 1fr); }
+            .col-3, .col-4 { grid-column: span 2; }
+        }
+        @media (max-width: 768px) {
+            .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+            [class*="col-"] { grid-column: span 1 !important; }
+        }
+
+        .patient-card {
+            background: var(--bg-card);
+            border-left: 8px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+        .patient-item dt { font-size: 13px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;}
+        .patient-item dd { font-size: 18px; font-weight: 700; margin: 4px 0 0 0; color: var(--primary); }
+
+        .section {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .section-header {
+            background-color: #e2e8f0;
+            padding: 12px 20px;
+            border-bottom: 2px solid var(--border-color);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .section-body { padding: 20px; }
+
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        label { font-size: 15px; font-weight: 700; color: var(--text-main); }
+        label.required::after { content: " *"; color: var(--danger); }
+
+        input[type="text"], input[type="date"], input[type="time"], input[type="number"], select, textarea {
+            width: 100%; padding: 12px 14px; font-size: 16px; font-family: inherit;
+            color: var(--text-main); background-color: #f8fafc;
+            border: 2px solid var(--border-color); border-radius: var(--radius);
+            transition: all 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none; border-color: var(--primary); background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(77, 107, 254, 0.15);
+        }
+        textarea { min-height: 90px; resize: vertical; }
+
+        /* Custom Radio Buttons */
+        .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .radio-label {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 10px 20px; background-color: #fff;
+            border: 2px solid var(--border-color); border-radius: var(--radius);
+            cursor: pointer; font-weight: 600; font-size: 15px;
+            transition: all 0.2s; min-width: 80px; flex: 1;
+        }
+        .radio-label input { display: none; }
+        .radio-label:hover { background-color: #f1f5f9; }
+        .radio-label.selected { background-color: var(--primary); color: #fff; border-color: var(--primary); }
+        .radio-label.val-y.selected { background-color: var(--primary); border-color: var(--primary); color: #fff; }
+        .radio-label.val-n.selected { background-color: var(--danger); border-color: var(--danger); color: #fff; }
+
+        .btn {
+            padding: 12px 20px; font-size: 15px; font-weight: 700;
+            text-align: center; border: 2px solid transparent;
+            border-radius: var(--radius); cursor: pointer; transition: all 0.2s;
+        }
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: var(--primary-hover); }
+        .btn-outline { background-color: transparent; border-color: var(--border-color); color: var(--text-main); }
+        .btn-danger { background-color: transparent; border-color: var(--danger); color: var(--danger); }
+        .btn-danger:hover { background-color: var(--danger); color: white; }
+
+        .action-bar {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: #fff; padding: 12px 24px;
+            border-top: 2px solid var(--border-color);
+            display: flex; justify-content: flex-end; gap: 16px;
+            z-index: 100; box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+        }
+
+        .dpjp-row { display: flex; gap: 12px; align-items: flex-start; }
+        .dpjp-row .input-wrapper { flex: 1; }
+        
+        .duration-box {
+            background: #e0e7ff; border: 2px solid #c7d2fe; color: var(--primary); 
+            padding: 12px; border-radius: var(--radius); font-weight: 800; font-size: 18px;
+            text-align: center; display: flex; align-items: center; justify-content: center; height: 100%;
+        }
+
+        .set-card { border: 2px solid var(--primary); border-radius: var(--radius); margin-bottom: 24px; background: #f8fafc; overflow: hidden; }
+        .set-header { background: var(--primary); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; color: white; font-weight: 700; }
+        .set-header select { width: auto; max-width: 400px; padding: 8px 12px; border: none; border-radius: 4px; }
+        .set-card .section-body { background: #fff; }
+
+        /* =========================================
+           CSS UNTUK TAMPILAN CETAK (PRINT)
+           ========================================= */
+        #print-area { display: none; }
+
+        @media print {
+            @page { size: A4; margin: 1.5cm; }
+            body { background: #fff; padding: 0; font-family: 'Times New Roman', Times, serif; }
+            .form-container, .action-bar { display: none !important; }
+            #print-area { display: block !important; color: #000; }
+            
+            /* Kop Surat */
+            .kop-surat { display: flex; align-items: center; border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
+            .kop-logo { width: 80px; height: 80px; border: 1px solid #000; text-align: center; line-height: 80px; font-weight: bold; margin-right: 15px; }
+            .kop-text { flex: 1; text-align: center; }
+            .kop-text h1 { margin: 0; font-size: 18px; font-weight: normal; }
+            .kop-text h2 { margin: 0; font-size: 22px; font-weight: bold; }
+            .kop-text h3 { margin: 0; font-size: 16px; font-weight: normal; }
+            .kop-text p { margin: 2px 0 0 0; font-size: 12px; }
+            
+            /* Judul */
+            .print-title { text-align: center; font-size: 18px; font-weight: bold; text-decoration: underline; margin-bottom: 20px; }
+
+            /* Tabel Data */
+            .print-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 14px; }
+            .print-table td { padding: 4px 8px; vertical-align: top; }
+            .print-table .label { width: 25%; font-weight: bold; }
+            
+            /* Box Uraian */
+            .print-box { border: 1px solid #000; padding: 10px; min-height: 80px; font-size: 14px; margin-bottom: 15px; white-space: pre-wrap; }
+            
+            /* QR Code Area */
+            .qr-container { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 15px; justify-content: space-around; }
+            .qr-item { text-align: center; font-size: 12px; }
+            .qr-item img, .qr-item canvas { width: 70px; height: 70px; margin-bottom: 5px; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="lop3">
-        <h1>Laporan Operasi</h1>
+    <div class="form-container">
+        <h1 style="color: var(--primary); margin-top: 0; margin-bottom: 24px; font-size: 24px;">Laporan Operasi</h1>
+        
         <form id="form-data" onsubmit="return false">
-            <input type="hidden" name="id_permintaan_operasi" value="101980">
-            <input type="hidden" name="id_laporan" value="67786">
+            <!-- INFORMASI PASIEN -->
+            <div class="patient-card">
+                <div class="patient-item"><dt>No. RM</dt><dd id="info-rm">257076</dd></div>
+                <div class="patient-item"><dt>Nama Pasien</dt><dd id="info-nama">DIAN ADI</dd></div>
+                <div class="patient-item"><dt>Tgl Lahir</dt><dd>12/04/1964</dd></div>
+                <div class="patient-item"><dt>No. Registrasi</dt><dd>2610140012</dd></div>
+                <div class="patient-item"><dt>Tanggal Masuk</dt><dd>14/10/2026</dd></div>
+                <div class="patient-item"><dt>Ruang Rawat</dt><dd>Bed Fisioterapi</dd></div>
+            </div>
 
-            <dl class="patient">
-                <div><dt>No. RM</dt><dd>257076</dd></div>
-                <div><dt>Nama</dt><dd>DIAN ADI </dd></div>
-                <div><dt>Tgl lahir</dt><dd>12/04/1964</dd></div>
-                <div><dt>No. registrasi</dt><dd>2610140012</dd></div>
-                <div><dt>Tanggal masuk</dt><dd>14/10/2026</dd></div>
-                <div><dt>Ruang rawat</dt><dd>Bed Fisioterapi Fisioterapi</dd></div>
-            </dl>
+            <!-- SECTION 1: TIM OPERASI -->
+            <div class="section">
+                <div class="section-header">1. Tim Operasi</div>
+                <div class="section-body">
+                    <div class="grid grid-3">
+                        <div class="col-3">
+                            <label class="required">Daftar DPJP Bedah / Operator</label>
+                            <div id="dlist" class="grid grid-2" style="margin-top: 10px;"></div>
+                            <button type="button" class="btn btn-outline" id="addDpjp" style="margin-top: 12px;">+ Tambah DPJP</button>
+                        </div>
 
-            <section data-c="1">
-                <h2>Tim operasi</h2>
-                <div class="body">
-                    <div class="full">
-                        <div class="dlist" id="dlist"></div>
-                        <button type="button" class="btn3 ghost" id="addDpjp">+ Tambah DPJP bedah/operator</button>
-                    </div>
-                    <div class="f"><label>Dokter anestesi</label><div class="search"><input type="text" class="noupper ac" name="asisten" data-opsi="nakes_admisi3" data-id="id_asisten" value="Aria Puspita sari, Am.keb" autocomplete="off"><input type="hidden" name="id_asisten" id="id_asisten" value="1918528"></div></div>
-                    <div class="f"><label>Asisten I</label><div class="search"><input type="text" class="noupper ac" name="asisten2" data-opsi="nakes_admisi3" data-id="id_asisten2" value="Dian Mandasari, Am.Kep" autocomplete="off"><input type="hidden" name="id_asisten2" id="id_asisten2" value="2323562"></div></div>
-                    <div class="f"><label>Asisten II</label><div class="search"><input type="text" class="noupper ac" name="bedah2" data-opsi="nakes_admisi3" data-id="id_bedah2" value="DEWI PUSPITA SARI,AMD.KEP" autocomplete="off"><input type="hidden" name="id_bedah2" id="id_bedah2" value="1918491"></div></div>
-                    <div class="f"><label>Perawat instrumen 1</label><div class="search"><input type="text" class="noupper ac" name="perawat" data-opsi="nakes_admisi3" data-id="id_perawat" value="Aria Puspita sari, Am.keb" autocomplete="off"><input type="hidden" name="id_perawat" id="id_perawat" value="1918528"></div></div>
-                    <div class="f"><label>Perawat instrumen 2</label><div class="search"><input type="text" class="noupper ac" name="instrumen" data-opsi="nakes_admisi3" data-id="id_instrumen" value="Aria Puspita sari, Am.keb" autocomplete="off"><input type="hidden" name="id_instrumen" id="id_instrumen" value="1918528"></div></div>
-                    <div class="f"><label>Perawat sirkuler 1</label><div class="search"><input type="text" class="noupper ac" name="perawat_sirkuler" data-opsi="nakes_admisi2" data-id="id_perawat_sirkuler" value="DEWI PUSPITA SARI,AMD.KEP" autocomplete="off"><input type="hidden" name="id_perawat_sirkuler" id="id_perawat_sirkuler" value="1918491"></div></div>
-                    <div class="f"><label>Perawat sirkuler 2</label><div class="search"><input type="text" class="noupper ac" name="anestesi2" data-opsi="nakes_admisi_bak" data-id="id_anestesi2" value="Aria Puspita sari, Am.keb" autocomplete="off"><input type="hidden" name="id_anestesi2" id="id_anestesi2" value="1918528"></div></div>
-                </div>
-            </section>
-
-            <section data-c="2">
-                <h2>Diagnosis dan waktu</h2>
-                <div class="body">
-                    <div class="f"><label>Diagnosis pra bedah</label><textarea name="diagnosis_pra_bedah">asd</textarea></div>
-                    <div class="f"><label class="req">Tanggal bedah</label><input type="date" name="tanggal_bedah" id="tgl" value="2026-11-03"></div>
-                    <div class="f"><label>Diagnosis pasca bedah</label><textarea name="diagnosis_pasca_bedah">asdasd</textarea></div>
-                    <div class="timegrid">
-                        <div class="f"><label class="req">Jam mulai</label><input type="time" name="jam_mulai" id="mulai" value="08:46"></div>
-                        <div class="f"><label class="req">Jam selesai</label><input type="time" name="jam_selesai" id="selesai" value="09:47"></div>
-                        <div class="f"><span class="lbl">Waktu bedah</span><div class="duration"><b id="dur">-</b><span>menit</span></div></div>
-                    </div>
-                </div>
-            </section>
-
-            <section data-c="3">
-                <h2>Jenis operasi</h2>
-                <div class="body">
-                    <div class="f"><label>Nama macam operasi</label><textarea name="nama_operasi">asdasd</textarea></div>
-                    <div class="f">
-                        <label class="req">Klasifikasi / jenis operasi</label>
-                        <select name="jenis_operasi">
-                            <option value="">Pilih klasifikasi</option>
-                            <option value="emergency" selected>Emergency</option>
-                            <option value="poliklinik">Poliklinik</option>
-                            <option value="efektif">Elektif</option>
-                        </select>
-                        <div class="group" style="margin-top:6px">
-                            <label class="chip"><input type="radio" name="golongan_operasi" value="minor" checked><span>Kecil</span></label>
-                            <label class="chip"><input type="radio" name="golongan_operasi" value="medium"><span>Sedang</span></label>
-                            <label class="chip"><input type="radio" name="golongan_operasi" value="mayor"><span>Besar</span></label>
-                            <label class="chip"><input type="radio" name="golongan_operasi" value="khusus"><span>Khusus</span></label>					
+                        <div class="form-group">
+                            <label>Dokter Anestesi</label>
+                            <input type="text" name="asisten" value="Aria Puspita sari, Am.keb">
                         </div>
-                    </div>
-                    <div class="f"><label>Jaringan yang dieksisi</label><textarea name="jaringan_eksisi">asdsad</textarea></div>
-                    <div class="f">
-                        <span class="lbl req">Jenis anestesi</span>
-                        <div class="group">
-                            <label class="chip"><input type="radio" name="jenis_anestesi" value="Lokal" checked><span>Lokal</span></label>
-                            <label class="chip"><input type="radio" name="jenis_anestesi" value="Umum"><span>Umum</span></label>
-                            <label class="chip"><input type="radio" name="jenis_anestesi" value="Regional"><span>Regional</span></label>					
+                        <div class="form-group">
+                            <label>Asisten I</label>
+                            <input type="text" name="asisten2" value="Dian Mandasari, Am.Kep">
                         </div>
-                        <span class="lbl req" style="margin-top:8px">Operasi pasien kanker?</span>
-                        <div class="group">
-                            <label class="chip"><input type="radio" name="flag_kanker" value="Y" class="risk" checked><span>Ya</span></label>						
-                            <label class="chip"><input type="radio" name="flag_kanker" value="N"><span>Tidak</span></label>
+                        <div class="form-group">
+                            <label>Asisten II</label>
+                            <input type="text" name="bedah2" value="DEWI PUSPITA SARI,AMD.KEP">
                         </div>
-                        <span class="lbl req" style="margin-top:8px">Operasi syaraf?</span>
-                        <div class="group">
-                            <label class="chip"><input type="radio" name="flag_syaraf" value="Y" class="risk" checked><span>Ya</span></label>						
-                            <label class="chip"><input type="radio" name="flag_syaraf" value="N"><span>Tidak</span></label>
+                        <div class="form-group">
+                            <label>Perawat Instrumen 1</label>
+                            <input type="text" name="perawat" value="Aria Puspita sari, Am.keb">
                         </div>
-                        <div class="group" id="jenisSyaraf" style="margin-top:6px">
-                            <label class="chip"><input type="radio" name="jenis_syaraf" value="STROKE"><span>Stroke</span></label>						
-                            <label class="chip"><input type="radio" name="jenis_syaraf" value="NON" checked><span>Non stroke</span></label>
+                        <div class="form-group">
+                            <label>Perawat Instrumen 2</label>
+                            <input type="text" name="instrumen" value="Aria Puspita sari, Am.keb">
                         </div>
-                    </div>
-
-                    <div class="sub">Spesimen dan implan</div>
-                    <div class="col">
-                        <div class="f"><span class="lbl">Dikirim untuk</span>
-                            <div class="group">
-                                <label class="chip"><input type="radio" name="kirim_untuk" value="Pa" checked><span>PA</span></label>							
-                                <label class="chip"><input type="radio" name="kirim_untuk" value="Kultur"><span>Kultur</span></label>						
-                            </div>
-                        </div>
-                        <div class="f"><span class="lbl">Pemeriksaan</span>
-                            <div class="group">
-                                <label class="chip"><input type="radio" name="pemeriksaan" value="N" checked><span>Tidak</span></label>							
-                                <label class="chip"><input type="radio" name="pemeriksaan" value="Y"><span>Ya</span></label>						
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="f"><span class="lbl">Penggunaan implan</span>
-                            <div class="group">
-                                <label class="chip"><input type="radio" name="penggunaan_implan" value="N" checked><span>Tidak</span></label>							
-                                <label class="chip"><input type="radio" name="penggunaan_implan" value="Y"><span>Ya</span></label>						
-                            </div>
-                        </div>
-                        <div class="subrow" id="depImplan" hidden>
-                            <div class="f"><label>Jenis implan</label><input type="text" name="jenis_implan" value="" disabled></div>
-                            <div class="f"><label>Nomor implan</label><input type="text" name="nomor_implan" value="" disabled></div>
+                        <div class="form-group">
+                            <label>Perawat Sirkuler</label>
+                            <input type="text" name="perawat_sirkuler" value="DEWI PUSPITA SARI,AMD.KEP">
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
 
+            <!-- SECTION 2: DIAGNOSIS & WAKTU -->
+            <div class="section">
+                <div class="section-header">2. Diagnosis & Waktu Pelaksanaan</div>
+                <div class="section-body">
+                    <div class="grid grid-4">
+                        <div class="form-group col-2">
+                            <label>Diagnosis Pra Bedah</label>
+                            <textarea name="diagnosis_pra_bedah">Stemi Anterior</textarea>
+                        </div>
+                        <div class="form-group col-2">
+                            <label>Diagnosis Pasca Bedah</label>
+                            <textarea name="diagnosis_pasca_bedah">Post PPCI 1 DES</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="required">Tanggal Bedah</label>
+                            <input type="date" name="tanggal_bedah" id="tgl" value="2026-11-03">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Jam Mulai</label>
+                            <input type="time" name="jam_mulai" id="mulai" value="08:46">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Jam Selesai</label>
+                            <input type="time" name="jam_selesai" id="selesai" value="09:47">
+                        </div>
+                        <div class="form-group">
+                            <label>Total Waktu</label>
+                            <div class="duration-box"><span id="dur">-</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: JENIS OPERASI -->
+            <div class="section">
+                <div class="section-header">3. Klasifikasi Jenis Operasi</div>
+                <div class="section-body">
+                    <div class="grid grid-4">
+                        <div class="form-group col-4">
+                            <label>Nama Macam Operasi</label>
+                            <textarea name="nama_operasi">CAG + PPCI 1 DES</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="required">Klasifikasi</label>
+                            <select name="jenis_operasi">
+                                <option value="Emergency" selected>Emergency</option>
+                                <option value="Poliklinik">Poliklinik</option>
+                                <option value="Elektif">Elektif</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-3">
+                            <label class="required">Golongan Operasi</label>
+                            <div class="radio-group">
+                                <label class="radio-label selected"><input type="radio" name="golongan_operasi" value="Kecil" checked> Kecil</label>
+                                <label class="radio-label"><input type="radio" name="golongan_operasi" value="Sedang"> Sedang</label>
+                                <label class="radio-label"><input type="radio" name="golongan_operasi" value="Besar"> Besar</label>
+                                <label class="radio-label"><input type="radio" name="golongan_operasi" value="Khusus"> Khusus</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label>Jaringan yang Dieksisi</label>
+                            <textarea name="jaringan_eksisi" style="min-height: 60px;">-</textarea>
+                        </div>
+
+                        <!-- Baris Pilihan Ganda -->
+                        <div class="form-group col-2">
+                            <label class="required">Jenis Anestesi</label>
+                            <div class="radio-group">
+                                <label class="radio-label selected"><input type="radio" name="jenis_anestesi" value="Lokal" checked> Lokal</label>
+                                <label class="radio-label"><input type="radio" name="jenis_anestesi" value="Umum"> Umum</label>
+                                <label class="radio-label"><input type="radio" name="jenis_anestesi" value="Regional"> Regional</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Kanker?</label>
+                            <div class="radio-group">
+                                <label class="radio-label val-y selected"><input type="radio" name="flag_kanker" value="Ya" checked> Ya</label>
+                                <label class="radio-label val-n"><input type="radio" name="flag_kanker" value="Tidak"> Tidak</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Syaraf?</label>
+                            <div class="radio-group">
+                                <label class="radio-label val-y selected"><input type="radio" name="flag_syaraf" value="Ya" checked> Ya</label>
+                                <label class="radio-label val-n"><input type="radio" name="flag_syaraf" value="Tidak"> Tidak</label>
+                            </div>
+                        </div>
+
+                        <!-- Baris Pilihan Ganda 2 -->
+                        <div class="form-group col-2" id="jenisSyaraf">
+                            <label>Jenis Syaraf</label>
+                            <div class="radio-group">
+                                <label class="radio-label"><input type="radio" name="jenis_syaraf" value="Stroke"> Stroke</label>
+                                <label class="radio-label selected"><input type="radio" name="jenis_syaraf" value="Non Stroke" checked> Non Stroke</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-2">
+                            <label>Dikirim Spesimen?</label>
+                            <div class="radio-group">
+                                <label class="radio-label selected"><input type="radio" name="kirim_untuk" value="PA" checked> PA</label>
+                                <label class="radio-label"><input type="radio" name="kirim_untuk" value="Kultur"> Kultur</label>
+                            </div>
+                        </div>
+
+                        <!-- Baris Pilihan Ganda 3 -->
+                        <div class="form-group col-2">
+                            <label>Pemeriksaan Penunjang?</label>
+                            <div class="radio-group">
+                                <label class="radio-label val-n selected"><input type="radio" name="pemeriksaan" value="Tidak" checked> Tidak</label>
+                                <label class="radio-label val-y"><input type="radio" name="pemeriksaan" value="Ya"> Ya</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-2">
+                            <label>Penggunaan Implan?</label>
+                            <div class="radio-group">
+                                <label class="radio-label val-y selected"><input type="radio" name="penggunaan_implan" value="Ya" checked> Ya</label>
+                                <label class="radio-label val-n"><input type="radio" name="penggunaan_implan" value="Tidak"> Tidak</label>
+                            </div>
+                        </div>
+                        
+                        <!-- Detail Implan -->
+                        <div class="col-4" id="depImplan">
+                            <div class="grid grid-2">
+                                <div class="form-group"><label>Jenis Implan</label><input type="text" name="jenis_implan" value="DES Eternia"></div>
+                                <div class="form-group"><label>Nomor Implan</label><input type="text" name="nomor_implan" value="ETN2024A"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DYNAMIC SETS (URAIAN PER DPJP) -->
             <div id="sets"></div>
-            <div class="addrow"><button type="button" class="btn3 ghost" id="addSet" hidden></button></div>
+            <div style="margin-bottom: 30px;">
+                <button type="button" class="btn btn-primary" id="addSet" style="display:none; width: 100%; font-size: 16px; padding: 16px;">+ Tambah Set Uraian Pembedahan Operator Lain</button>
+            </div>
 
-            <div class="bar">
-                <button type="button" class="btn3" onclick="history.back()">Batal</button>
-                <button type="button" class="btn3 primary" id="btnSimpan">Simpan</button>
+            <!-- STICKY BOTTOM ACTION BAR -->
+            <div class="action-bar">
+                <button type="button" class="btn btn-outline" onclick="history.back()">Batal</button>
+                <!-- Tombol Cetak diubah memanggil fungsi JS -->
+                <button type="button" class="btn btn-primary" id="btnSimpan" style="padding: 12px 48px; font-size: 16px;" onclick="generatePrintView()">SIMPAN & CETAK</button>
             </div>
         </form>
     </div>
 
-    <!-- Custom JS (Diekstrak dari file Anda) -->
+    <!-- ==============================================
+         AREA CETAK (HIDDEN DI LAYAR, MUNCUL SAAT PRINT)
+         ============================================== -->
+    <div id="print-area">
+        <!-- Kop Surat -->
+        <div class="kop-surat">
+            <div class="kop-logo">LOGO<br>RSUD</div>
+            <div class="kop-text">
+                <h1>PEMERINTAH KOTA JAMBI</h1>
+                <h2>RUMAH SAKIT UMUM DAERAH H. ABDUL MANAP</h2>
+                <h3>KOTA JAMBI</h3>
+                <p>Jl. Sk. Rd. Syahbudin, Mayang Mangurai, Alam Barajo, Kota Jambi</p>
+                <p>Telp: (0741) 5910180, Fax: (0741) 5910180 | Email: rsudjambikota@gmail.com | Web: rsud.jambikota.go.id</p>
+            </div>
+        </div>
+
+        <!-- Judul -->
+        <div class="print-title">LAPORAN OPERASI</div>
+
+        <!-- Data Pasien -->
+        <table class="print-table">
+            <tr>
+                <td class="label">No. Rekam Medis</td><td>: 257076</td>
+                <td class="label">Nama Pasien</td><td>: DIAN ADI</td>
+            </tr>
+            <tr>
+                <td class="label">Tanggal Lahir / Umur</td><td>: 12/04/1964 (62 Tahun)</td>
+                <td class="label">No. Registrasi</td><td>: 2610140012</td>
+            </tr>
+            <tr>
+                <td class="label">Ruang Rawat</td><td>: Bed Fisioterapi</td>
+                <td class="label">Tanggal Masuk</td><td>: 14/10/2026</td>
+            </tr>
+        </table>
+
+        <hr style="border: 1px solid #000; margin-bottom: 15px;">
+
+        <!-- Tim Medis (DPJP Utama & Lainnya) -->
+        <table class="print-table">
+            <tr>
+                <td class="label" style="width: 20%;">DPJP Bedah / Operator</td>
+                <td style="width: 30%;">: <span id="print-dpjp-utama">dr. Mutya Dyah Arumsari, Sp.A</span></td>
+                <td class="label" style="width: 20%;">Dokter Anestesi</td>
+                <td>: <span id="print-anestesi">Aria Puspita sari, Am.keb</span></td>
+            </tr>
+            <tr>
+                <td class="label">Asisten I</td>
+                <td>: <span id="print-asisten1">Dian Mandasari, Am.Kep</span></td>
+                <td class="label">Asisten II</td>
+                <td>: <span id="print-asisten2">DEWI PUSPITA SARI,AMD.KEP</span></td>
+            </tr>
+            <tr>
+                <td class="label">Perawat Instrumen 1</td>
+                <td>: <span id="print-instrumen1">Aria Puspita sari, Am.keb</span></td>
+                <td class="label">Perawat Instrumen 2</td>
+                <td>: <span id="print-instrumen2">Aria Puspita sari, Am.keb</span></td>
+            </tr>
+        </table>
+
+        <!-- Waktu & Diagnosis -->
+        <table class="print-table" style="margin-top: 10px; border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 10px 0;">
+            <tr>
+                <td class="label">Tanggal Operasi</td><td>: <span id="print-tgl">03 November 2026</span></td>
+                <td class="label">Waktu Pelaksanaan</td><td>: <span id="print-jam">08:46 - 09:47</span></td>
+            </tr>
+            <tr>
+                <td class="label">Diagnosis Pra Bedah</td><td colspan="3">: <span id="print-diag-pra">Stemi Anterior</span></td>
+            </tr>
+            <tr>
+                <td class="label">Diagnosis Pasca Bedah</td><td colspan="3">: <span id="print-diag-pasca">Post PPCI 1 DES</span></td>
+            </tr>
+            <tr>
+                <td class="label">Tindakan Operasi</td><td colspan="3">: <span id="print-nama-op">CAG + PPCI 1 DES</span></td>
+            </tr>
+            <tr>
+                <td class="label">Jenis Anestesi</td><td>: <span id="print-anestesi-jenis">Lokal</span></td>
+                <td class="label">Klasifikasi</td><td>: <span id="print-klasifikasi">Emergency (Kecil)</span></td>
+            </tr>
+            <tr>
+                <td class="label">Komplikasi</td><td>: <span id="print-komp">Ya - Perdarahan ringan</span></td>
+                <td class="label">Perdarahan / Transfusi</td><td>: <span id="print-perdarahan">22 cc / 22 cc</span></td>
+            </tr>
+        </table>
+
+        <!-- Uraian Pembedahan -->
+        <div style="font-weight: bold; margin-bottom: 5px; margin-top: 15px;">URAIAN PEMBEDAHAN:</div>
+        <div class="print-box" id="print-uraian">
+            Uraikan detail tindakan pembedahan di sini...
+        </div>
+
+        <!-- Tanda Tangan / QR Code DPJP -->
+        <div class="qr-container" id="print-qr-container">
+            <!-- QR Code akan di-generate oleh JS di sini -->
+        </div>
+    </div>
+
+
     <script>
         var LOP3 = {
-            // Data dummy ini diambil dari kode Anda
             init: {
                 "dpjp":[
                     {"id":"2323145","nama":"dr. Mutya Dyah Arumsari, Sp.A"},
@@ -231,12 +511,9 @@
                     {"id":"2335766","nama":"Dr. Budi Setiawan, Sp.KJ"}
                 ],
                 "sets":[
-                    {"urutan":1,"uraian":"input text","komp":"Y","komp_ket":"input text","patol":"Y","jenis_jaringan":"input text","perdarahan":"22","transfusi":"22","drain":"Y"},
-                    {"urutan":2,"uraian":"input text","komp":"Y","komp_ket":"input text","patol":"Y","jenis_jaringan":"input text","perdarahan":12,"transfusi":12,"drain":"Y"}
+                    {"urutan":1,"uraian":"Tindakan antiseptik di daerah radialis kanan. Dilakukan anestesi lokal...","komp":"Ya","komp_ket":"Perdarahan ringan","patol":"Tidak","jenis_jaringan":"-","perdarahan":"22","transfusi":"22","drain":"Tidak"}
                 ]
-            },
-            search: "/stagingmorbis/admisi/search?opsi=", // Akan gagal jika tidak ada backend, tapi form tetap bisa diisi
-            control: "/stagingmorbis/admisi/report_operasi_v3/control"
+            }
         };
 
         $(function () {
@@ -247,63 +524,68 @@
                 return $('<div/>').text(s === null || s === undefined ? '' : s).html().replace(/"/g, '&quot;');
             }
 
-            // Autocomplete nakes: input[data-id] -> hidden id
-            function bindAc($in, opsi, idSel) {
-                // Autocomplete dimatikan sementara karena tidak ada backend
-                // $in.autocomplete(...)
-                $in.data('picked', $in.val());
-                $in.keyup(function () {
-                    if ($(this).val() != $(this).data('picked')) {
-                        $(idSel).val('');
-                    }
+            // --- Custom Radio Buttons ---
+            function initRadios() {
+                $('.radio-group').each(function() {
+                    var $group = $(this);
+                    $group.find('input[type=radio]').each(function() {
+                        var $radio = $(this);
+                        var $label = $radio.closest('.radio-label');
+                        if($radio.is(':checked')) { $label.addClass('selected'); }
+                        
+                        $radio.on('change', function() {
+                            $group.find('.radio-label').removeClass('selected');
+                            $label.addClass('selected');
+                        });
+                    });
                 });
             }
+            initRadios();
 
-            $('input.ac').each(function () {
-                bindAc($(this), $(this).attr('data-opsi'), '#' + $(this).attr('data-id'));
-            });
-
-            // ---- Waktu bedah
+            // --- Waktu Bedah ---
             function toMin(t) { return parseInt(t.slice(0, 2), 10) * 60 + parseInt(t.slice(3, 5), 10); }
             function dur() {
                 var a = $('#mulai').val(), b = $('#selesai').val();
                 if (!a || !b) { $('#dur').text('-'); return; }
                 var d = toMin(b) - toMin(a);
                 if (d < 0) { d += 1440; }
-                $('#dur').text(d);
+                $('#dur').text(d + ' Menit');
             }
             $('#mulai, #selesai').bind('change keyup', dur);
             dur();
 
-            // ---- Toggle sederhana
+            // --- Toggle ---
             function setHidden($el, hide) {
-                if (hide) { $el.attr('hidden', 'hidden'); } else { $el.removeAttr('hidden'); }
+                if (hide) { $el.hide(); } else { $el.show(); }
             }
-            $('input[name=flag_syaraf]').click(function () {
-                setHidden($('#jenisSyaraf'), $('input[name=flag_syaraf]:checked').val() != 'Y');
+            $('input[name=flag_syaraf]').change(function () {
+                setHidden($('#jenisSyaraf'), $('input[name=flag_syaraf]:checked').val() != 'Ya');
             });
-            $('input[name=penggunaan_implan]').click(function () {
-                var ya = $('input[name=penggunaan_implan]:checked').val() == 'Y';
+            $('input[name=penggunaan_implan]').change(function () {
+                var ya = $('input[name=penggunaan_implan]:checked').val() == 'Ya';
                 setHidden($('#depImplan'), !ya);
                 var $f = $('#depImplan input');
                 if (ya) { $f.removeAttr('disabled'); } else { $f.attr('disabled', 'disabled').val(''); }
             });
 
-            // ---- DPJP
-            function rows() { return $dlist.children('.drow'); }
-            function sets() { return $sets.children('.set'); }
-            function lblOf(i) { return i == 0 ? 'DPJP bedah/operator' : 'DPJP bedah/operator ' + (i + 1); }
+            // --- DPJP ---
+            function rows() { return $dlist.children('.dpjp-row'); }
+            function sets() { return $sets.children('.set-card'); }
+            function lblOf(i) { return i == 0 ? 'DPJP Utama' : 'DPJP ' + (i + 1); }
 
             function addDpjp(d) {
                 var id = ++uid;
-                var $r = $('<div class="f drow" data-uid="' + id + '">' +
-                    '<label></label><div class="search">' +
-                    '<input type="text" class="noupper" name="dpjp_nama[]" autocomplete="off" value="' + esc(d ? d.nama : '') + '">' +
-                    '<input type="hidden" name="dpjp_id[]" value="' + esc(d ? d.id : '') + '">' +
-                    '<button type="button" class="btn3 rm">Hapus</button></div></div>');
+                var $r = $('<div class="dpjp-row" data-uid="' + id + '">' +
+                    '<div class="input-wrapper">' +
+                        '<label style="font-size:14px; color:#475569;"></label>' +
+                        '<div style="display:flex; gap:8px;">' +
+                            '<input type="text" name="dpjp_nama[]" value="' + esc(d ? d.nama : '') + '" placeholder="Ketik nama dokter...">' +
+                            '<input type="hidden" name="dpjp_id[]" value="' + esc(d ? d.id : '') + '">' +
+                            '<button type="button" class="btn btn-danger rm" style="padding: 10px;">X</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '</div>');
                 $dlist.append($r);
-                bindAc($r.find('input[type=text]'), 'nakes_admisi', $r.find('input[type=hidden]'));
-                $r.find('input[type=text]').keyup(refreshOps);
                 $r.find('.rm').click(function () { removeDpjp($r); });
                 relabel();
                 return $r;
@@ -311,24 +593,16 @@
 
             function relabel() {
                 rows().each(function (i) {
-                    $(this).find('label').text(lblOf(i)).attr('class', i == 0 ? 'req' : '');
+                    $(this).find('label').text(lblOf(i)).attr('class', i == 0 ? 'required' : '');
                     $(this).find('.rm')[i == 0 ? 'hide' : 'show']();
                 });
                 refreshOps();
             }
 
-            function hasContent($s) {
-                var ya = false;
-                $s.find('textarea, input[type=text]').each(function () { if ($(this).val()) { ya = true; } });
-                return ya;
-            }
-
             function removeDpjp($r) {
                 var u = String($r.attr('data-uid'));
                 var $mine = sets().filter(function () { return $(this).find('.opsel').val() == u; });
-                var isi = false;
-                $mine.each(function () { if (hasContent($(this))) { isi = true; } });
-                if (isi && !confirm('Set uraian milik operator ini akan ikut dihapus. Lanjutkan?')) { return; }
+                if ($mine.find('textarea, input[type=text]').val() !== '' && !confirm('Set uraian milik operator ini akan ikut dihapus. Lanjutkan?')) { return; }
                 $mine.remove();
                 $r.remove();
                 if (sets().length == 0) { addSet(rows().eq(0).attr('data-uid')); }
@@ -336,37 +610,51 @@
                 renumberSets();
             }
 
-            // ---- Set uraian
-            function chips(name, val, risk) {
-                return '<label class="chip"><input type="radio" name="' + name + '" value="N"' + (val != 'Y' ? ' checked' : '') + '><span>Tidak</span></label>' +
-                    '<label class="chip"><input type="radio" name="' + name + '" value="Y"' + (val == 'Y' ? ' checked' : '') + (risk ? ' class="risk"' : '') + '><span>Ya</span></label>';
+            // --- Set Uraian ---
+            function chips(name, val) {
+                var isY = val == 'Ya';
+                return '<div class="radio-group">' +
+                    '<label class="radio-label val-n ' + (!isY ? 'selected' : '') + '"><input type="radio" name="' + name + '" value="Tidak"' + (!isY ? ' checked' : '') + '> Tidak</label>' +
+                    '<label class="radio-label val-y ' + (isY ? 'selected' : '') + '"><input type="radio" name="' + name + '" value="Ya"' + (isY ? ' checked' : '') + '> Ya</label>' +
+                    '</div>';
             }
 
             function setHtml(n, s) {
                 var p = 'set[' + n + ']';
-                return '<div class="set" data-sid="' + n + '">' +
-                    '<div class="sethead" hidden><b class="setno"></b><label>Operator <select class="opsel"></select></label>' +
-                    '<button type="button" class="btn3 rm delset">Hapus set</button></div>' +
+                return '<div class="set-card" data-sid="' + n + '">' +
+                    '<div class="set-header" style="display:none;">' +
+                        '<div style="display:flex; align-items:center; gap:12px;">' +
+                            '<b class="setno" style="font-size:18px;"></b>' +
+                            '<select class="opsel"></select>' +
+                        '</div>' +
+                        '<button type="button" class="btn btn-danger delset">Hapus Set</button>' +
+                    '</div>' +
                     '<input type="hidden" name="' + p + '[urutan]" class="urutan">' +
-                    '<section data-c="4"><h2>Uraian pembedahan<small>Uraikan lengkap tindakan dan hal yang ditemukan pada pembedahan</small></h2>' +
-                    '<div class="body"><div class="f full"><textarea name="' + p + '[uraian]" style="min-height:190px">' + esc(s.uraian) + '</textarea></div></div></section>' +
-                    '<section data-c="5"><h2>Komplikasi<small>Yang didapatkan saat tindakan pembedahan</small></h2>' +
-                    '<div class="body"><div class="f full"><span class="lbl">Ada komplikasi?</span><div class="group r-komp">' + chips(p + '[komp]', s.komp, true) + '</div></div>' +
-                    '<div class="f full dep-komp"><label>Keterangan komplikasi</label><textarea name="' + p + '[komp_ket]">' + esc(s.komp_ket) + '</textarea></div></div></section>' +
-                    '<section data-c="6"><h2>Pemeriksaan fungsi sistem organ</h2><div class="body">' +
-                    '<div class="f"><span class="lbl">Jaringan ke patologi</span><div class="group r-patol">' + chips(p + '[patol]', s.patol, false) + '</div></div>' +
-                    '<div class="f dep-patol"><label>Jenis jaringan</label><input type="text" name="' + p + '[jenis_jaringan]" value="' + esc(s.jenis_jaringan) + '"></div>' +
-                    '<div class="f"><label>Perkiraan perdarahan</label><div class="unit"><input type="number" min="0" name="' + p + '[perdarahan]" value="' + esc(s.perdarahan) + '"><em>cc</em></div></div>' +
-                    '<div class="f"><label>Transfusi darah</label><div class="unit"><input type="number" min="0" name="' + p + '[transfusi]" value="' + esc(s.transfusi) + '"><em>cc</em></div></div>' +
-                    '<div class="f"><span class="lbl">Pemakaian drain</span><div class="group">' +
-                    '<label class="chip"><input type="radio" name="' + p + '[drain]" value="N"' + (s.drain != 'Y' ? ' checked' : '') + '><span>Tidak ada</span></label>' +
-                    '<label class="chip"><input type="radio" name="' + p + '[drain]" value="Y"' + (s.drain == 'Y' ? ' checked' : '') + '><span>Ada</span></label></div></div>' +
-                    '</div></section></div>';
+                    
+                    '<div class="section-body">' +
+                        '<div class="grid grid-4">' +
+                            '<div class="form-group col-4"><label class="required" style="font-size:18px; color:var(--primary);">Uraian Pembedahan</label><textarea name="' + p + '[uraian]" placeholder="Tuliskan detail tindakan..." style="min-height:100px;">' + esc(s.uraian) + '</textarea></div>' +
+                            
+                            '<div class="form-group col-2"><label>Apakah ada komplikasi?</label><div class="r-komp">' + chips(p + '[komp]', s.komp) + '</div></div>' +
+                            '<div class="form-group col-2 dep-komp"><label>Keterangan Komplikasi</label><textarea name="' + p + '[komp_ket]" style="min-height: 60px;">' + esc(s.komp_ket) + '</textarea></div>' +
+                            
+                            '<div class="form-group col-2"><label>Jaringan ke Patologi?</label><div class="r-patol">' + chips(p + '[patol]', s.patol) + '</div></div>' +
+                            '<div class="form-group col-2 dep-patol"><label>Jenis Jaringan</label><input type="text" name="' + p + '[jenis_jaringan]" value="' + esc(s.jenis_jaringan) + '"></div>' +
+                            
+                            '<div class="form-group"><label>Perdarahan (cc)</label><input type="number" min="0" name="' + p + '[perdarahan]" value="' + esc(s.perdarahan) + '"></div>' +
+                            '<div class="form-group"><label>Transfusi (cc)</label><input type="number" min="0" name="' + p + '[transfusi]" value="' + esc(s.transfusi) + '"></div>' +
+                            '<div class="form-group col-2"><label>Pemakaian Drain?</label><div class="radio-group">' +
+                                '<label class="radio-label val-n ' + (s.drain != 'Ya' ? 'selected' : '') + '"><input type="radio" name="' + p + '[drain]" value="Tidak"' + (s.drain != 'Ya' ? ' checked' : '') + '> Tidak Ada</label>' +
+                                '<label class="radio-label val-y ' + (s.drain == 'Ya' ? 'selected' : '') + '"><input type="radio" name="' + p + '[drain]" value="Ya"' + (s.drain == 'Ya' ? ' checked' : '') + '> Ada</label>' +
+                            '</div></div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
             }
 
             function syncSet($s) {
-                $s.find('.dep-komp')[$s.find('.r-komp input:checked').val() == 'Y' ? 'show' : 'hide']();
-                $s.find('.dep-patol')[$s.find('.r-patol input:checked').val() == 'Y' ? 'show' : 'hide']();
+                $s.find('.dep-komp')[$s.find('.r-komp input:checked').val() == 'Ya' ? 'show' : 'hide']();
+                $s.find('.dep-patol')[$s.find('.r-patol input:checked').val() == 'Ya' ? 'show' : 'hide']();
             }
 
             function freeUid() {
@@ -378,12 +666,19 @@
             }
 
             function addSet(opUid, data) {
-                var s = data || { komp: 'N', patol: 'N', drain: 'N' };
+                var s = data || { komp: 'Tidak', patol: 'Tidak', drain: 'Tidak' };
                 var n = ++sid;
                 var $s = $(setHtml(n, s));
                 $sets.append($s);
                 $s.data('opUid', opUid);
-                $s.find('input[type=radio]').click(function () { syncSet($s); });
+                
+                $s.find('input[type=radio]').on('change', function () {
+                    var $group = $(this).closest('.radio-group');
+                    $group.find('.radio-label').removeClass('selected');
+                    $(this).closest('.radio-label').addClass('selected');
+                    syncSet($s);
+                });
+
                 $s.find('.delset').click(function () { $s.remove(); renumberSets(); refreshOps(); });
                 syncSet($s);
                 renumberSets();
@@ -393,7 +688,7 @@
 
             function renumberSets() {
                 sets().each(function (i) {
-                    $(this).find('.setno').text('Set ' + (i + 1));
+                    $(this).find('.setno').text('Set Uraian ' + (i + 1));
                     $(this).find('.delset')[i == 0 ? 'hide' : 'show']();
                 });
             }
@@ -413,66 +708,101 @@
                     $sel.val(ok ? want : $r.eq(Math.min(si, $r.length - 1)).attr('data-uid'));
                 });
                 var multi = $r.length > 1;
-                $('.sethead').each(function () { if (multi) { $(this).removeAttr('hidden'); } else { $(this).attr('hidden', 'hidden'); } });
+                $('.set-header').each(function () { if (multi) { $(this).show(); } else { $(this).hide(); } });
                 var $b = $('#addSet');
-                if (multi) { $b.removeAttr('hidden'); } else { $b.attr('hidden', 'hidden'); }
-                $b.text('+ Tambah set uraian (' + sets().length + '/' + $r.length + ')');
-                if (sets().length >= $r.length) { $b.attr('disabled', 'disabled'); } else { $b.removeAttr('disabled'); }
+                if (multi) { $b.show(); } else { $b.hide(); }
+                $b.text('+ Tambah Set Uraian Operator Lain (' + sets().length + '/' + $r.length + ')');
+                if (sets().length >= $r.length) { $b.prop('disabled', true).css('opacity', 0.5); } else { $b.prop('disabled', false).css('opacity', 1); }
             }
 
             $('#addDpjp').click(function () { addDpjp(); });
             $('#addSet').click(function () { if (sets().length < rows().length) { addSet(freeUid()); } });
-            $sets.delegate('.opsel', 'change', function () { $(this).closest('.set').data('opUid', $(this).val()); });
+            $sets.delegate('.opsel', 'change', function () { $(this).closest('.set-card').data('opUid', $(this).val()); });
 
-            // ---- Init dari data tersimpan
+            // --- Init Data ---
             var st = LOP3.init, i;
             for (i = 0; i < st.dpjp.length; i++) { addDpjp(st.dpjp[i]); }
             for (i = 0; i < st.sets.length; i++) {
                 var pos = parseInt(st.sets[i].urutan, 10) - 1;
                 addSet(rows().eq(pos < rows().length ? pos : 0).attr('data-uid'), st.sets[i]);
             }
+            relabel();
+        });
 
-            // ---- Simpan (Mockup)
-            function validate() {
-                var f = $('#form-data'), msg = null;
-                if (!$('#tgl').val()) { msg = 'Tanggal bedah belum diisi'; }
-                else if (!$('#mulai').val()) { msg = 'Jam mulai belum diisi'; }
-                else if (!$('#selesai').val()) { msg = 'Jam selesai belum diisi'; }
-                else if (!f.find('select[name=jenis_operasi]').val() || !f.find('input[name=golongan_operasi]:checked').val()) { msg = 'Klasifikasi/jenis operasi belum lengkap diisi'; }
-                else if (!f.find('input[name=jenis_anestesi]:checked').val()) { msg = 'Jenis anestesi belum diisi'; }
-                else if (!f.find('input[name=flag_kanker]:checked').val()) { msg = 'Operasi pasien kanker belum dipilih'; }
-                else if (!f.find('input[name=flag_syaraf]:checked').val()) { msg = 'Operasi syaraf belum dipilih'; }
-                else if (f.find('input[name=flag_syaraf]:checked').val() == 'Y' && !f.find('input[name=jenis_syaraf]:checked').val()) { msg = 'Jenis syaraf belum dipilih'; }
-                rows().each(function (i) {
-                    if (!msg && !$(this).find('input[type=hidden]').val()) { msg = lblOf(i) + ' belum dipilih dari daftar'; }
-                });
-                var seen = {};
-                sets().each(function () {
-                    var u = $(this).find('.opsel').val();
-                    if (!msg && seen[u]) { msg = 'Satu operator hanya boleh memiliki satu set uraian'; }
-                    seen[u] = true;
-                });
-                return msg;
-            }
+        // ==============================================
+        // FUNGSI UNTUK CETAK & GENERATE QR CODE
+        // ==============================================
+        function generatePrintView() {
+            // 1. Ambil data dari form
+            var dpjpNames = [];
+            $('input[name="dpjp_nama[]"]').each(function() {
+                if($(this).val()) dpjpNames.push($(this).val());
+            });
 
-            $('#btnSimpan').click(function () {
-                var msg = validate();
-                if (msg) { toastr.warning(msg); return; }
+            var tglBedah = $('#tgl').val();
+            var jamMulai = $('#mulai').val();
+            var jamSelesai = $('#selesai').val();
+            
+            // 2. Isi Data ke Print View
+            $('#print-tgl').text(tglBedah);
+            $('#print-jam').text(jamMulai + ' - ' + jamSelesai);
+            $('#print-diag-pra').text($('textarea[name="diagnosis_pra_bedah"]').val());
+            $('#print-diag-pasca').text($('textarea[name="diagnosis_pasca_bedah"]').val());
+            $('#print-nama-op').text($('textarea[name="nama_operasi"]').val());
+            
+            $('#print-anestesi-jenis').text($('input[name="jenis_anestesi"]:checked').val());
+            $('#print-klasifikasi').text($('select[name="jenis_operasi"]').val() + ' (' + $('input[name="golongan_operasi"]:checked').val() + ')');
+
+            // Tim Medis
+            $('#print-dpjp-utama').text(dpjpNames[0] || '-');
+            $('#print-anestesi').text($('input[name="asisten"]').val());
+            $('#print-asisten1').text($('input[name="asisten2"]').val());
+            $('#print-asisten2').text($('input[name="bedah2"]').val());
+            $('#print-instrumen1').text($('input[name="perawat"]').val());
+            $('#print-instrumen2').text($('input[name="instrumen"]').val());
+
+            // Ambil set pertama (Uraian DPJP Utama)
+            var $firstSet = $('#sets .set-card:first');
+            $('#print-uraian').text($firstSet.find('textarea[name$="[uraian]"]').val());
+            
+            var komp = $firstSet.find('.r-komp input:checked').val();
+            var kompKet = $firstSet.find('textarea[name$="[komp_ket]"]').val();
+            $('#print-komp').text(komp + (kompKet ? ' - ' + kompKet : ''));
+            
+            var perdarahan = $firstSet.find('input[name$="[perdarahan]"]').val();
+            var transfusi = $firstSet.find('input[name$="[transfusi]"]').val();
+            $('#print-perdarahan').text(perdarahan + ' cc / ' + transfusi + ' cc');
+
+            // 3. Generate QR Code untuk Masing-Masing DPJP
+            var $qrContainer = $('#print-qr-container');
+            $qrContainer.empty(); // Kosongkan container
+
+            dpjpNames.forEach(function(nama) {
+                // Buat div pembungkus
+                var $item = $('<div class="qr-item"></div>');
+                var $qrDiv = $('<div style="display:inline-block; border: 1px solid #000; padding: 5px;"></div>');
+                var $text = $('<div style="margin-top: 5px;">' + nama + '</div>');
                 
-                swal({
-                    title: 'Apakah Anda Yakin Isian \n Form Sudah Sesuai ?',
-                    icon: 'warning',
-                    buttons: true,
-                    dangerMode: true
-                }).then(function (action) {
-                    if (!action) { return; }
-                    
-                    // Simulasi Proses AJAX
-                    toastr.success('Data berhasil disimulasikan tersimpan!', 'Sukses', { timeOut: 3000 });
-                    console.log($('#form-data').serialize());
+                // Simpan ke container
+                $item.append($qrDiv).append($text);
+                $qrContainer.append($item);
+
+                // Generate QR Code (Menggunakan teks nama sebagai datanya)
+                new QRCode($qrDiv[0], {
+                    text: "TTD-DIGITAL:" + nama,
+                    width: 70,
+                    height: 70,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.M
                 });
             });
-        });
+
+            // 4. Panggil fungsi Print Browser
+            setTimeout(function() {
+                window.print();
+            }, 500); // Delay sedikit agar QR selesai dirender
+        }
     </script>
 </body>
 </html>
