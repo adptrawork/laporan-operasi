@@ -96,6 +96,9 @@
             font-size: 18px;
             font-weight: 700;
             color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .section-body { padding: 20px; }
 
@@ -138,6 +141,7 @@
         .btn-primary { background-color: var(--primary); color: white; }
         .btn-primary:hover { background-color: var(--primary-hover); }
         .btn-outline { background-color: transparent; border-color: var(--border-color); color: var(--text-main); }
+        .btn-outline:hover { background-color: #e2e8f0; }
         .btn-danger { background-color: transparent; border-color: var(--danger); color: var(--danger); }
         .btn-danger:hover { background-color: var(--danger); color: white; }
 
@@ -220,7 +224,11 @@
 <body>
 
     <div class="form-container">
-        <h1 style="color: var(--primary); margin-top: 0; margin-bottom: 24px; font-size: 24px;">Laporan Operasi</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <h1 style="color: var(--primary); margin: 0; font-size: 24px;">Laporan Operasi</h1>
+            <!-- TOMBOL PRESET DATA SAMPEL -->
+            <button type="button" class="btn btn-outline" style="border-color: var(--primary); color: var(--primary);" onclick="loadPreset()">✨ Muat Data Sampel (Preset)</button>
+        </div>
         
         <form id="form-data" onsubmit="return false">
             <!-- INFORMASI PASIEN -->
@@ -246,27 +254,27 @@
 
                         <div class="form-group">
                             <label>Dokter Anestesi</label>
-                            <input type="text" name="asisten" value="Aria Puspita sari, Am.keb">
+                            <input type="text" name="asisten" value="">
                         </div>
                         <div class="form-group">
                             <label>Asisten I</label>
-                            <input type="text" name="asisten2" value="Dian Mandasari, Am.Kep">
+                            <input type="text" name="asisten2" value="">
                         </div>
                         <div class="form-group">
                             <label>Asisten II</label>
-                            <input type="text" name="bedah2" value="DEWI PUSPITA SARI,AMD.KEP">
+                            <input type="text" name="bedah2" value="">
                         </div>
                         <div class="form-group">
                             <label>Perawat Instrumen 1</label>
-                            <input type="text" name="perawat" value="Aria Puspita sari, Am.keb">
+                            <input type="text" name="perawat" value="">
                         </div>
                         <div class="form-group">
                             <label>Perawat Instrumen 2</label>
-                            <input type="text" name="instrumen" value="Aria Puspita sari, Am.keb">
+                            <input type="text" name="instrumen" value="">
                         </div>
                         <div class="form-group">
                             <label>Perawat Sirkuler</label>
-                            <input type="text" name="perawat_sirkuler" value="DEWI PUSPITA SARI,AMD.KEP">
+                            <input type="text" name="perawat_sirkuler" value="">
                         </div>
                     </div>
                 </div>
@@ -279,24 +287,24 @@
                     <div class="grid grid-4">
                         <div class="form-group col-2">
                             <label>Diagnosis Pra Bedah</label>
-                            <textarea name="diagnosis_pra_bedah">Stemi Anterior</textarea>
+                            <textarea name="diagnosis_pra_bedah"></textarea>
                         </div>
                         <div class="form-group col-2">
                             <label>Diagnosis Pasca Bedah</label>
-                            <textarea name="diagnosis_pasca_bedah">Post PPCI 1 DES</textarea>
+                            <textarea name="diagnosis_pasca_bedah"></textarea>
                         </div>
                         
                         <div class="form-group">
                             <label class="required">Tanggal Bedah</label>
-                            <input type="date" name="tanggal_bedah" id="tgl" value="2026-11-03">
+                            <input type="date" name="tanggal_bedah" id="tgl" value="">
                         </div>
                         <div class="form-group">
                             <label class="required">Jam Mulai</label>
-                            <input type="time" name="jam_mulai" id="mulai" value="08:46">
+                            <input type="time" name="jam_mulai" id="mulai" value="">
                         </div>
                         <div class="form-group">
                             <label class="required">Jam Selesai</label>
-                            <input type="time" name="jam_selesai" id="selesai" value="09:47">
+                            <input type="time" name="jam_selesai" id="selesai" value="">
                         </div>
                         <div class="form-group">
                             <label>Total Waktu</label>
@@ -313,13 +321,13 @@
                     <div class="grid grid-4">
                         <div class="form-group col-4">
                             <label>Nama Macam Operasi</label>
-                            <textarea name="nama_operasi">CAG + PPCI 1 DES</textarea>
+                            <textarea name="nama_operasi"></textarea>
                         </div>
                         
                         <div class="form-group">
                             <label class="required">Klasifikasi</label>
                             <select name="jenis_operasi">
-                                <option value="Emergency" selected>Emergency</option>
+                                <option value="Emergency">Emergency</option>
                                 <option value="Poliklinik">Poliklinik</option>
                                 <option value="Elektif">Elektif</option>
                             </select>
@@ -327,7 +335,7 @@
                         <div class="form-group col-3">
                             <label class="required">Golongan Operasi</label>
                             <div class="radio-group">
-                                <label class="radio-label selected"><input type="radio" name="golongan_operasi" value="Kecil" checked> Kecil</label>
+                                <label class="radio-label"><input type="radio" name="golongan_operasi" value="Kecil"> Kecil</label>
                                 <label class="radio-label"><input type="radio" name="golongan_operasi" value="Sedang"> Sedang</label>
                                 <label class="radio-label"><input type="radio" name="golongan_operasi" value="Besar"> Besar</label>
                                 <label class="radio-label"><input type="radio" name="golongan_operasi" value="Khusus"> Khusus</label>
@@ -336,14 +344,14 @@
 
                         <div class="form-group col-4">
                             <label>Jaringan yang Dieksisi</label>
-                            <textarea name="jaringan_eksisi" style="min-height: 60px;">-</textarea>
+                            <textarea name="jaringan_eksisi" style="min-height: 60px;"></textarea>
                         </div>
 
                         <!-- Baris Pilihan Ganda -->
                         <div class="form-group col-2">
                             <label class="required">Jenis Anestesi</label>
                             <div class="radio-group">
-                                <label class="radio-label selected"><input type="radio" name="jenis_anestesi" value="Lokal" checked> Lokal</label>
+                                <label class="radio-label"><input type="radio" name="jenis_anestesi" value="Lokal"> Lokal</label>
                                 <label class="radio-label"><input type="radio" name="jenis_anestesi" value="Umum"> Umum</label>
                                 <label class="radio-label"><input type="radio" name="jenis_anestesi" value="Regional"> Regional</label>
                             </div>
@@ -351,14 +359,14 @@
                         <div class="form-group">
                             <label class="required">Kanker?</label>
                             <div class="radio-group">
-                                <label class="radio-label val-y selected"><input type="radio" name="flag_kanker" value="Ya" checked> Ya</label>
+                                <label class="radio-label val-y"><input type="radio" name="flag_kanker" value="Ya"> Ya</label>
                                 <label class="radio-label val-n"><input type="radio" name="flag_kanker" value="Tidak"> Tidak</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="required">Syaraf?</label>
                             <div class="radio-group">
-                                <label class="radio-label val-y selected"><input type="radio" name="flag_syaraf" value="Ya" checked> Ya</label>
+                                <label class="radio-label val-y"><input type="radio" name="flag_syaraf" value="Ya"> Ya</label>
                                 <label class="radio-label val-n"><input type="radio" name="flag_syaraf" value="Tidak"> Tidak</label>
                             </div>
                         </div>
@@ -368,13 +376,13 @@
                             <label>Jenis Syaraf</label>
                             <div class="radio-group">
                                 <label class="radio-label"><input type="radio" name="jenis_syaraf" value="Stroke"> Stroke</label>
-                                <label class="radio-label selected"><input type="radio" name="jenis_syaraf" value="Non Stroke" checked> Non Stroke</label>
+                                <label class="radio-label"><input type="radio" name="jenis_syaraf" value="Non Stroke"> Non Stroke</label>
                             </div>
                         </div>
                         <div class="form-group col-2">
                             <label>Dikirim Spesimen?</label>
                             <div class="radio-group">
-                                <label class="radio-label selected"><input type="radio" name="kirim_untuk" value="PA" checked> PA</label>
+                                <label class="radio-label"><input type="radio" name="kirim_untuk" value="PA"> PA</label>
                                 <label class="radio-label"><input type="radio" name="kirim_untuk" value="Kultur"> Kultur</label>
                             </div>
                         </div>
@@ -383,23 +391,23 @@
                         <div class="form-group col-2">
                             <label>Pemeriksaan Penunjang?</label>
                             <div class="radio-group">
-                                <label class="radio-label val-n selected"><input type="radio" name="pemeriksaan" value="Tidak" checked> Tidak</label>
+                                <label class="radio-label val-n"><input type="radio" name="pemeriksaan" value="Tidak"> Tidak</label>
                                 <label class="radio-label val-y"><input type="radio" name="pemeriksaan" value="Ya"> Ya</label>
                             </div>
                         </div>
                         <div class="form-group col-2">
                             <label>Penggunaan Implan?</label>
                             <div class="radio-group">
-                                <label class="radio-label val-y selected"><input type="radio" name="penggunaan_implan" value="Ya" checked> Ya</label>
+                                <label class="radio-label val-y"><input type="radio" name="penggunaan_implan" value="Ya"> Ya</label>
                                 <label class="radio-label val-n"><input type="radio" name="penggunaan_implan" value="Tidak"> Tidak</label>
                             </div>
                         </div>
                         
                         <!-- Detail Implan -->
-                        <div class="col-4" id="depImplan">
+                        <div class="col-4" id="depImplan" style="display: none;">
                             <div class="grid grid-2">
-                                <div class="form-group"><label>Jenis Implan</label><input type="text" name="jenis_implan" value="DES Eternia"></div>
-                                <div class="form-group"><label>Nomor Implan</label><input type="text" name="nomor_implan" value="ETN2024A"></div>
+                                <div class="form-group"><label>Jenis Implan</label><input type="text" name="jenis_implan" disabled></div>
+                                <div class="form-group"><label>Nomor Implan</label><input type="text" name="nomor_implan" disabled></div>
                             </div>
                         </div>
                     </div>
@@ -428,232 +436,282 @@
 
 
     <script>
-        var LOP3 = {
-            init: {
-                "dpjp":[
-                    {"id":"2323145","nama":"dr. Mutya Dyah Arumsari, Sp.A"},
-                    {"id":"2323137","nama":"dr. Maya Sari"},
-                    {"id":"2335766","nama":"Dr. Budi Setiawan, Sp.KJ"}
-                ],
-                "sets":[
-                    {"urutan":1,"uraian":"Tindakan antiseptik di daerah radialis kanan. Dilakukan anestesi lokal...","komp":"Ya","komp_ket":"Perdarahan ringan","patol":"Tidak","jenis_jaringan":"-","perdarahan":"22","transfusi":"22","drain":"Tidak"},
-                    {"urutan":2,"uraian":"Tindakan antiseptik di daerah radialis kanan. Dilakukan anestesi lokal... (Lanjutan)","komp":"Tidak","komp_ket":"-","patol":"Ya","jenis_jaringan":"Jaringan Ikat","perdarahan":"20","transfusi":"76","drain":"Ya"}
-                ]
-            }
-        };
+        var uid = 0, sid = 0;
+        var $dlist = $('#dlist'), $sets = $('#sets');
 
-        $(function () {
-            var uid = 0, sid = 0;
-            var $dlist = $('#dlist'), $sets = $('#sets');
+        function esc(s) {
+            return $('<div/>').text(s === null || s === undefined ? '' : s).html().replace(/"/g, '&quot;');
+        }
 
-            function esc(s) {
-                return $('<div/>').text(s === null || s === undefined ? '' : s).html().replace(/"/g, '&quot;');
-            }
-
-            // --- Custom Radio Buttons ---
-            function initRadios() {
-                $('.radio-group').each(function() {
-                    var $group = $(this);
-                    $group.find('input[type=radio]').each(function() {
-                        var $radio = $(this);
-                        var $label = $radio.closest('.radio-label');
-                        if($radio.is(':checked')) { $label.addClass('selected'); }
-                        
-                        $radio.on('change', function() {
-                            $group.find('.radio-label').removeClass('selected');
-                            $label.addClass('selected');
-                        });
-                    });
-                });
-            }
-            initRadios();
-
-            // --- Waktu Bedah ---
-            function toMin(t) { return parseInt(t.slice(0, 2), 10) * 60 + parseInt(t.slice(3, 5), 10); }
-            function dur() {
-                var a = $('#mulai').val(), b = $('#selesai').val();
-                if (!a || !b) { $('#dur').text('-'); return; }
-                var d = toMin(b) - toMin(a);
-                if (d < 0) { d += 1440; }
-                $('#dur').text(d + ' Menit');
-            }
-            $('#mulai, #selesai').bind('change keyup', dur);
-            dur();
-
-            // --- Toggle ---
-            function setHidden($el, hide) {
-                if (hide) { $el.hide(); } else { $el.show(); }
-            }
-            $('input[name=flag_syaraf]').change(function () {
-                setHidden($('#jenisSyaraf'), $('input[name=flag_syaraf]:checked').val() != 'Ya');
-            });
-            $('input[name=penggunaan_implan]').change(function () {
-                var ya = $('input[name=penggunaan_implan]:checked').val() == 'Ya';
-                setHidden($('#depImplan'), !ya);
-                var $f = $('#depImplan input');
-                if (ya) { $f.removeAttr('disabled'); } else { $f.attr('disabled', 'disabled').val(''); }
-            });
-
-            // --- DPJP ---
-            function rows() { return $dlist.children('.dpjp-row'); }
-            function sets() { return $sets.children('.set-card'); }
-            function lblOf(i) { return i == 0 ? 'DPJP Utama' : 'DPJP ' + (i + 1); }
-
-            function addDpjp(d) {
-                var id = ++uid;
-                var $r = $('<div class="dpjp-row" data-uid="' + id + '">' +
-                    '<div class="input-wrapper">' +
-                        '<label style="font-size:14px; color:#475569;"></label>' +
-                        '<div style="display:flex; gap:8px;">' +
-                            '<input type="text" name="dpjp_nama[]" value="' + esc(d ? d.nama : '') + '" placeholder="Ketik nama dokter...">' +
-                            '<input type="hidden" name="dpjp_id[]" value="' + esc(d ? d.id : '') + '">' +
-                            '<button type="button" class="btn btn-danger rm" style="padding: 10px;">X</button>' +
-                        '</div>' +
-                    '</div>' +
-                    '</div>');
-                $dlist.append($r);
-                $r.find('.rm').click(function () { removeDpjp($r); });
-                relabel();
-                return $r;
-            }
-
-            function relabel() {
-                rows().each(function (i) {
-                    $(this).find('label').text(lblOf(i)).attr('class', i == 0 ? 'required' : '');
-                    $(this).find('.rm')[i == 0 ? 'hide' : 'show']();
-                });
-                refreshOps();
-            }
-
-            function removeDpjp($r) {
-                var u = String($r.attr('data-uid'));
-                var $mine = sets().filter(function () { return $(this).find('.opsel').val() == u; });
-                if ($mine.find('textarea, input[type=text]').val() !== '' && !confirm('Set uraian milik operator ini akan ikut dihapus. Lanjutkan?')) { return; }
-                $mine.remove();
-                $r.remove();
-                if (sets().length == 0) { addSet(rows().eq(0).attr('data-uid')); }
-                relabel();
-                renumberSets();
-            }
-
-            // --- Set Uraian ---
-            function chips(name, val) {
-                var isY = val == 'Ya';
-                return '<div class="radio-group">' +
-                    '<label class="radio-label val-n ' + (!isY ? 'selected' : '') + '"><input type="radio" name="' + name + '" value="Tidak"' + (!isY ? ' checked' : '') + '> Tidak</label>' +
-                    '<label class="radio-label val-y ' + (isY ? 'selected' : '') + '"><input type="radio" name="' + name + '" value="Ya"' + (isY ? ' checked' : '') + '> Ya</label>' +
-                    '</div>';
-            }
-
-            function setHtml(n, s) {
-                var p = 'set[' + n + ']';
-                return '<div class="set-card" data-sid="' + n + '">' +
-                    '<div class="set-header" style="display:none;">' +
-                        '<div style="display:flex; align-items:center; gap:12px;">' +
-                            '<b class="setno" style="font-size:18px;"></b>' +
-                            '<select class="opsel"></select>' +
-                        '</div>' +
-                        '<button type="button" class="btn btn-danger delset">Hapus Set</button>' +
-                    '</div>' +
-                    '<input type="hidden" name="' + p + '[urutan]" class="urutan">' +
+        // --- Custom Radio Buttons ---
+        function initRadios() {
+            $('.radio-group').each(function() {
+                var $group = $(this);
+                $group.find('input[type=radio]').each(function() {
+                    var $radio = $(this);
+                    var $label = $radio.closest('.radio-label');
+                    if($radio.is(':checked')) { $label.addClass('selected'); }
                     
-                    '<div class="section-body">' +
-                        '<div class="grid grid-4">' +
-                            '<div class="form-group col-4"><label class="required" style="font-size:18px; color:var(--primary);">Uraian Pembedahan</label><textarea name="' + p + '[uraian]" placeholder="Tuliskan detail tindakan..." style="min-height:100px;">' + esc(s.uraian) + '</textarea></div>' +
-                            
-                            '<div class="form-group col-2"><label>Apakah ada komplikasi?</label><div class="r-komp">' + chips(p + '[komp]', s.komp) + '</div></div>' +
-                            '<div class="form-group col-2 dep-komp"><label>Keterangan Komplikasi</label><textarea name="' + p + '[komp_ket]" style="min-height: 60px;">' + esc(s.komp_ket) + '</textarea></div>' +
-                            
-                            '<div class="form-group col-2"><label>Jaringan ke Patologi?</label><div class="r-patol">' + chips(p + '[patol]', s.patol) + '</div></div>' +
-                            '<div class="form-group col-2 dep-patol"><label>Jenis Jaringan</label><input type="text" name="' + p + '[jenis_jaringan]" value="' + esc(s.jenis_jaringan) + '"></div>' +
-                            
-                            '<div class="form-group"><label>Perdarahan (cc)</label><input type="number" min="0" name="' + p + '[perdarahan]" value="' + esc(s.perdarahan) + '"></div>' +
-                            '<div class="form-group"><label>Transfusi (cc)</label><input type="number" min="0" name="' + p + '[transfusi]" value="' + esc(s.transfusi) + '"></div>' +
-                            '<div class="form-group col-2"><label>Pemakaian Drain?</label><div class="radio-group">' +
-                                '<label class="radio-label val-n ' + (s.drain != 'Ya' ? 'selected' : '') + '"><input type="radio" name="' + p + '[drain]" value="Tidak"' + (s.drain != 'Ya' ? ' checked' : '') + '> Tidak Ada</label>' +
-                                '<label class="radio-label val-y ' + (s.drain == 'Ya' ? 'selected' : '') + '"><input type="radio" name="' + p + '[drain]" value="Ya"' + (s.drain == 'Ya' ? ' checked' : '') + '> Ada</label>' +
-                            '</div></div>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>';
-            }
-
-            function syncSet($s) {
-                $s.find('.dep-komp')[$s.find('.r-komp input:checked').val() == 'Ya' ? 'show' : 'hide']();
-                $s.find('.dep-patol')[$s.find('.r-patol input:checked').val() == 'Ya' ? 'show' : 'hide']();
-            }
-
-            function freeUid() {
-                var used = {};
-                sets().each(function () { used[$(this).find('.opsel').val()] = true; });
-                var ret = null;
-                rows().each(function () { var u = $(this).attr('data-uid'); if (!ret && !used[u]) { ret = u; } });
-                return ret;
-            }
-
-            function addSet(opUid, data) {
-                var s = data || { komp: 'Tidak', patol: 'Tidak', drain: 'Tidak' };
-                var n = ++sid;
-                var $s = $(setHtml(n, s));
-                $sets.append($s);
-                $s.data('opUid', opUid);
-                
-                $s.find('input[type=radio]').on('change', function () {
-                    var $group = $(this).closest('.radio-group');
-                    $group.find('.radio-label').removeClass('selected');
-                    $(this).closest('.radio-label').addClass('selected');
-                    syncSet($s);
-                });
-
-                $s.find('.delset').click(function () { $s.remove(); renumberSets(); refreshOps(); });
-                syncSet($s);
-                renumberSets();
-                refreshOps();
-                return $s;
-            }
-
-            function renumberSets() {
-                sets().each(function (i) {
-                    $(this).find('.setno').text('Set Uraian ' + (i + 1));
-                    $(this).find('.delset')[i == 0 ? 'hide' : 'show']();
-                });
-            }
-
-            function refreshOps() {
-                var $r = rows();
-                sets().each(function (si) {
-                    var $sel = $(this).find('.opsel'), want = $sel.val() || $(this).data('opUid');
-                    var opts = '';
-                    $r.each(function (i) {
-                        var nm = $.trim($(this).find('input[type=text]').val());
-                        opts += '<option value="' + $(this).attr('data-uid') + '">' + esc(lblOf(i) + (nm ? ': ' + nm : '')) + '</option>';
+                    $radio.on('change', function() {
+                        $group.find('.radio-label').removeClass('selected');
+                        $label.addClass('selected');
+                        // Trigger change for dynamic shows
+                        $radio.trigger('customRadioChanged');
                     });
-                    $sel.html(opts);
-                    var ok = false;
-                    $r.each(function () { if ($(this).attr('data-uid') == want) { ok = true; } });
-                    $sel.val(ok ? want : $r.eq(Math.min(si, $r.length - 1)).attr('data-uid'));
                 });
-                var multi = $r.length > 1;
-                $('.set-header').each(function () { if (multi) { $(this).show(); } else { $(this).hide(); } });
-                var $b = $('#addSet');
-                if (multi) { $b.show(); } else { $b.hide(); }
-                $b.text('+ Tambah Set Uraian Operator Lain (' + sets().length + '/' + $r.length + ')');
-                if (sets().length >= $r.length) { $b.prop('disabled', true).css('opacity', 0.5); } else { $b.prop('disabled', false).css('opacity', 1); }
-            }
+            });
+        }
 
-            $('#addDpjp').click(function () { addDpjp(); });
-            $('#addSet').click(function () { if (sets().length < rows().length) { addSet(freeUid()); } });
-            $sets.delegate('.opsel', 'change', function () { $(this).closest('.set-card').data('opUid', $(this).val()); });
+        // --- Waktu Bedah ---
+        function toMin(t) { return parseInt(t.slice(0, 2), 10) * 60 + parseInt(t.slice(3, 5), 10); }
+        function dur() {
+            var a = $('#mulai').val(), b = $('#selesai').val();
+            if (!a || !b) { $('#dur').text('-'); return; }
+            var d = toMin(b) - toMin(a);
+            if (d < 0) { d += 1440; }
+            $('#dur').text(d + ' Menit');
+        }
 
-            // --- Init Data ---
-            var st = LOP3.init, i;
-            for (i = 0; i < st.dpjp.length; i++) { addDpjp(st.dpjp[i]); }
-            for (i = 0; i < st.sets.length; i++) {
-                var pos = parseInt(st.sets[i].urutan, 10) - 1;
-                addSet(rows().eq(pos < rows().length ? pos : 0).attr('data-uid'), st.sets[i]);
-            }
+        // --- Toggle ---
+        function setHidden($el, hide) {
+            if (hide) { $el.hide(); } else { $el.show(); }
+        }
+
+        // --- DPJP ---
+        function rows() { return $dlist.children('.dpjp-row'); }
+        function sets() { return $sets.children('.set-card'); }
+        function lblOf(i) { return i == 0 ? 'DPJP Utama' : 'DPJP ' + (i + 1); }
+
+        function addDpjp(d) {
+            var id = ++uid;
+            var $r = $('<div class="dpjp-row" data-uid="' + id + '">' +
+                '<div class="input-wrapper">' +
+                    '<label style="font-size:14px; color:#475569;"></label>' +
+                    '<div style="display:flex; gap:8px;">' +
+                        '<input type="text" name="dpjp_nama[]" value="' + esc(d ? d.nama : '') + '" placeholder="Ketik nama dokter...">' +
+                        '<input type="hidden" name="dpjp_id[]" value="' + esc(d ? d.id : '') + '">' +
+                        '<button type="button" class="btn btn-danger rm" style="padding: 10px;">X</button>' +
+                    '</div>' +
+                '</div>' +
+                '</div>');
+            $dlist.append($r);
+            $r.find('.rm').click(function () { removeDpjp($r); });
             relabel();
-        });
+            return $r;
+        }
+
+        function relabel() {
+            rows().each(function (i) {
+                $(this).find('label').text(lblOf(i)).attr('class', i == 0 ? 'required' : '');
+                $(this).find('.rm')[i == 0 ? 'hide' : 'show']();
+            });
+            refreshOps();
+        }
+
+        function removeDpjp($r) {
+            var u = String($r.attr('data-uid'));
+            var $mine = sets().filter(function () { return $(this).find('.opsel').val() == u; });
+            if ($mine.find('textarea, input[type=text]').val() !== '' && !confirm('Set uraian milik operator ini akan ikut dihapus. Lanjutkan?')) { return; }
+            $mine.remove();
+            $r.remove();
+            if (sets().length == 0 && rows().length > 0) { addSet(rows().eq(0).attr('data-uid')); }
+            relabel();
+            renumberSets();
+        }
+
+        // --- Set Uraian ---
+        function chips(name, val) {
+            var isY = val == 'Ya';
+            return '<div class="radio-group">' +
+                '<label class="radio-label val-n ' + (!isY ? 'selected' : '') + '"><input type="radio" name="' + name + '" value="Tidak"' + (!isY ? ' checked' : '') + '> Tidak</label>' +
+                '<label class="radio-label val-y ' + (isY ? 'selected' : '') + '"><input type="radio" name="' + name + '" value="Ya"' + (isY ? ' checked' : '') + '> Ya</label>' +
+                '</div>';
+        }
+
+        function setHtml(n, s) {
+            var p = 'set[' + n + ']';
+            return '<div class="set-card" data-sid="' + n + '">' +
+                '<div class="set-header" style="display:none;">' +
+                    '<div style="display:flex; align-items:center; gap:12px;">' +
+                        '<b class="setno" style="font-size:18px;"></b>' +
+                        '<select class="opsel"></select>' +
+                    '</div>' +
+                    '<button type="button" class="btn btn-danger delset">Hapus Set</button>' +
+                '</div>' +
+                '<input type="hidden" name="' + p + '[urutan]" class="urutan">' +
+                
+                '<div class="section-body">' +
+                    '<div class="grid grid-4">' +
+                        '<div class="form-group col-4"><label class="required" style="font-size:18px; color:var(--primary);">Uraian Pembedahan</label><textarea name="' + p + '[uraian]" placeholder="Tuliskan detail tindakan..." style="min-height:100px;">' + esc(s.uraian) + '</textarea></div>' +
+                        
+                        '<div class="form-group col-2"><label>Apakah ada komplikasi?</label><div class="r-komp">' + chips(p + '[komp]', s.komp) + '</div></div>' +
+                        '<div class="form-group col-2 dep-komp"><label>Keterangan Komplikasi</label><textarea name="' + p + '[komp_ket]" style="min-height: 60px;">' + esc(s.komp_ket) + '</textarea></div>' +
+                        
+                        '<div class="form-group col-2"><label>Jaringan ke Patologi?</label><div class="r-patol">' + chips(p + '[patol]', s.patol) + '</div></div>' +
+                        '<div class="form-group col-2 dep-patol"><label>Jenis Jaringan</label><input type="text" name="' + p + '[jenis_jaringan]" value="' + esc(s.jenis_jaringan) + '"></div>' +
+                        
+                        '<div class="form-group"><label>Perdarahan (cc)</label><input type="number" min="0" name="' + p + '[perdarahan]" value="' + esc(s.perdarahan) + '"></div>' +
+                        '<div class="form-group"><label>Transfusi (cc)</label><input type="number" min="0" name="' + p + '[transfusi]" value="' + esc(s.transfusi) + '"></div>' +
+                        '<div class="form-group col-2"><label>Pemakaian Drain?</label><div class="radio-group">' +
+                            '<label class="radio-label val-n ' + (s.drain != 'Ya' ? 'selected' : '') + '"><input type="radio" name="' + p + '[drain]" value="Tidak"' + (s.drain != 'Ya' ? ' checked' : '') + '> Tidak Ada</label>' +
+                            '<label class="radio-label val-y ' + (s.drain == 'Ya' ? 'selected' : '') + '"><input type="radio" name="' + p + '[drain]" value="Ya"' + (s.drain == 'Ya' ? ' checked' : '') + '> Ada</label>' +
+                        '</div></div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }
+
+        function syncSet($s) {
+            $s.find('.dep-komp')[$s.find('.r-komp input:checked').val() == 'Ya' ? 'show' : 'hide']();
+            $s.find('.dep-patol')[$s.find('.r-patol input:checked').val() == 'Ya' ? 'show' : 'hide']();
+        }
+
+        function freeUid() {
+            var used = {};
+            sets().each(function () { used[$(this).find('.opsel').val()] = true; });
+            var ret = null;
+            rows().each(function () { var u = $(this).attr('data-uid'); if (!ret && !used[u]) { ret = u; } });
+            return ret;
+        }
+
+        function addSet(opUid, data) {
+            var s = data || { komp: 'Tidak', patol: 'Tidak', drain: 'Tidak' };
+            var n = ++sid;
+            var $s = $(setHtml(n, s));
+            $sets.append($s);
+            $s.data('opUid', opUid);
+            
+            $s.find('input[type=radio]').on('change', function () {
+                var $group = $(this).closest('.radio-group');
+                $group.find('.radio-label').removeClass('selected');
+                $(this).closest('.radio-label').addClass('selected');
+                syncSet($s);
+            });
+
+            $s.find('.delset').click(function () { $s.remove(); renumberSets(); refreshOps(); });
+            syncSet($s);
+            renumberSets();
+            refreshOps();
+            return $s;
+        }
+
+        function renumberSets() {
+            sets().each(function (i) {
+                $(this).find('.setno').text('Set Uraian ' + (i + 1));
+                $(this).find('.delset')[i == 0 ? 'hide' : 'show']();
+            });
+        }
+
+        function refreshOps() {
+            var $r = rows();
+            sets().each(function (si) {
+                var $sel = $(this).find('.opsel'), want = $sel.val() || $(this).data('opUid');
+                var opts = '';
+                $r.each(function (i) {
+                    var nm = $.trim($(this).find('input[type=text]').val());
+                    opts += '<option value="' + $(this).attr('data-uid') + '">' + esc(lblOf(i) + (nm ? ': ' + nm : '')) + '</option>';
+                });
+                $sel.html(opts);
+                var ok = false;
+                $r.each(function () { if ($(this).attr('data-uid') == want) { ok = true; } });
+                $sel.val(ok ? want : $r.eq(Math.min(si, $r.length - 1)).attr('data-uid'));
+            });
+            var multi = $r.length > 1;
+            $('.set-header').each(function () { if (multi) { $(this).show(); } else { $(this).hide(); } });
+            var $b = $('#addSet');
+            if (multi) { $b.show(); } else { $b.hide(); }
+            $b.text('+ Tambah Set Uraian Operator Lain (' + sets().length + '/' + $r.length + ')');
+            if (sets().length >= $r.length) { $b.prop('disabled', true).css('opacity', 0.5); } else { $b.prop('disabled', false).css('opacity', 1); }
+        }
+
+        // --- FUNGSI LOAD PRESET DATA SAMPEL ---
+        function loadPreset() {
+            // 1. Reset form
+            $('input[type="text"], input[type="number"], textarea').val('');
+            $('input[type="date"], input[type="time"]').val('');
+            $('.radio-group').each(function() {
+                $(this).find('input[type=radio]').prop('checked', false);
+                $(this).find('.radio-label').removeClass('selected');
+            });
+            $dlist.empty(); $sets.empty();
+            uid = 0; sid = 0;
+
+            // 2. Isi Data Dasar & Klasifikasi
+            $('input[name="tanggal_bedah"]').val('2026-10-15');
+            $('input[name="jam_mulai"]').val('08:00');
+            $('input[name="jam_selesai"]').val('12:30');
+            dur();
+            
+            $('textarea[name="diagnosis_pra_bedah"]').val('Coronary Artery Disease 3 Vessel Disease (CAD 3VD)');
+            $('textarea[name="diagnosis_pasca_bedah"]').val('Post Coronary Artery Bypass Grafting (CABG) x3');
+            $('textarea[name="nama_operasi"]').val('CABG x3 (LIMA to LAD, SVG to RCA, SVG to LCx)');
+            $('textarea[name="jaringan_eksisi"]').val('-');
+            
+            $('select[name="jenis_operasi"]').val('Elektif');
+            
+            // Pilih Radio Utama (Klasifikasi)
+            $('input[name="golongan_operasi"][value="Besar"]').prop('checked', true).closest('.radio-label').addClass('selected');
+            $('input[name="jenis_anestesi"][value="Umum"]').prop('checked', true).closest('.radio-label').addClass('selected');
+            $('input[name="flag_kanker"][value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
+            $('input[name="flag_syaraf"][value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
+            $('input[name="jenis_syaraf"][value="Non Stroke"]').prop('checked', true).closest('.radio-label').addClass('selected');
+            $('input[name="kirim_untuk"][value="PA"]').prop('checked', true).closest('.radio-label').addClass('selected');
+            $('input[name="pemeriksaan"][value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
+            $('input[name="penggunaan_implan"][value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
+            $('#jenisSyaraf').hide();
+            $('#depImplan').hide();
+
+            // 3. Isi Tim Medis
+            $('input[name="asisten"]').val('dr. Andi Wijaya, Sp.An');
+            $('input[name="asisten2"]').val('Ns. Budi Santoso');
+            $('input[name="bedah2"]').val('Ns. Citra Dewi');
+            $('input[name="perawat"]').val('Ns. Eka Lestari');
+            $('input[name="instrumen"]').val('Ns. Fani Rahma');
+            $('input[name="perawat_sirkuler"]').val('Ns. Gita Puspita');
+
+            // 4. Tambah DPJP
+            var dpjp1 = { id: "D001", nama: "dr. Mutya Dyah Arumsari, Sp.A" };
+            var dpjp2 = { id: "D002", nama: "dr. Budi Setiawan, Sp.KJ" };
+            addDpjp(dpjp1);
+            addDpjp(dpjp2);
+
+            // 5. Tambah Set Uraian 1 (Untuk DPJP 1)
+            var uid1 = rows().eq(0).attr('data-uid');
+            var $set1 = addSet(uid1, {
+                uraian: "Tindakan aseptik dan antiseptik daerah operasi. Insisi median sternotomy. Heparinisasi. Kanulasi aorta dan vena cava inferior. Kardiotomi. Identifikasi target vessel. Pengambilan graft LIMA dan SVG. Anastomosis LIMA ke LAD, SVG ke RCA, SVG ke LCx. Protamin. Pemasangan wire sternum, drain mediastinum dan pleural. Penutupan luka lapis demi lapis.",
+                komp: "Tidak", komp_ket: "-",
+                patol: "Tidak", jenis_jaringan: "-",
+                perdarahan: "500", transfusi: "1000", drain: "Ya"
+            });
+            // Pastikan radio di set 1 terpilih dengan benar secara visual
+            $set1.find('.r-komp input[value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
+            $set1.find('.r-patol input[value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
+            $set1.find('input[name$="[drain]"][value="Ya"]').prop('checked', true).closest('.radio-label').addClass('selected');
+            syncSet($set1);
+
+            // 6. Tambah Set Uraian 2 (Untuk DPJP 2)
+            var uid2 = rows().eq(1).attr('data-uid');
+            var $set2 = addSet(uid2, {
+                uraian: "Membantu tindakan operator utama. Bertanggung jawab pada area luka operasi, persiapan pengambilan vena safena, dan penjahitan luka operasi (suturing).",
+                komp: "Ya", komp_ket: "Aritmia saat tindakan (ditangani oleh anestesi)",
+                patol: "Ya", jenis_jaringan: "Vena Safena",
+                perdarahan: "200", transfusi: "500", drain: "Tidak"
+            });
+            $set2.find('.r-komp input[value="Ya"]').prop('checked', true).closest('.radio-label').addClass('selected');
+            $set2.find('.r-patol input[value="Ya"]').prop('checked', true).closest('.radio-label').addClass('selected');
+            $set2.find('input[name$="[drain]"][value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
+            syncSet($set2);
+
+            // Reset Textarea uraian Set 2 (karena UI JS sebelumnya mengosongkan)
+            $set2.find('textarea[name$="[uraian]"]').val("Membantu tindakan operator utama. Bertanggung jawab pada area luka operasi, persiapan pengambilan vena safena, dan penjahitan luka operasi (suturing).");
+            $set2.find('textarea[name$="[komp_ket]"]').val("Aritmia saat tindakan (ditangani oleh anestesi)");
+            $set2.find('input[name$="[jenis_jaringan]"]').val("Vena Safena");
+            $set2.find('input[name$="[perdarahan]"]').val("200");
+            $set2.find('input[name$="[transfusi]"]').val("500");
+
+            relabel();
+            toastr.success('Data sampel berhasil dimuat!', 'Sukses');
+        }
 
         // ==============================================
         // FUNGSI UNTUK GENERATE TAMPILAN CETAK DINAMIS
@@ -704,20 +762,20 @@
                         <td class="label">Tindakan Operasi</td><td colspan="3">: ${$('textarea[name="nama_operasi"]').val()}</td>
                     </tr>
                     <tr>
-                        <td class="label">Jenis Anestesi</td><td>: ${$('input[name="jenis_anestesi"]:checked').val()}</td>
-                        <td class="label">Klasifikasi</td><td>: ${$('select[name="jenis_operasi"]').val()} (${$('input[name="golongan_operasi"]:checked').val()})</td>
+                        <td class="label">Jenis Anestesi</td><td>: ${$('input[name="jenis_anestesi"]:checked').val() || '-'}</td>
+                        <td class="label">Klasifikasi</td><td>: ${$('select[name="jenis_operasi"]').val() || '-'} (${$('input[name="golongan_operasi"]:checked').val() || '-'})</td>
                     </tr>
                 </table>
                 
                 <div style="font-weight: bold; margin: 15px 0 10px 0; font-size: 15px;">TIM MEDIS:</div>
                 <table class="print-table" style="margin-bottom: 20px;">
                     <tr>
-                        <td class="label" style="width: 20%;">Dokter Anestesi</td><td style="width: 30%;">: ${$('input[name="asisten"]').val()}</td>
-                        <td class="label" style="width: 20%;">Asisten I</td><td>: ${$('input[name="asisten2"]').val()}</td>
+                        <td class="label" style="width: 20%;">Dokter Anestesi</td><td style="width: 30%;">: ${$('input[name="asisten"]').val() || '-'}</td>
+                        <td class="label" style="width: 20%;">Asisten I</td><td>: ${$('input[name="asisten2"]').val() || '-'}</td>
                     </tr>
                     <tr>
-                        <td class="label">Asisten II</td><td>: ${$('input[name="bedah2"]').val()}</td>
-                        <td class="label">Perawat Instrumen</td><td>: ${$('input[name="perawat"]').val()}</td>
+                        <td class="label">Asisten II</td><td>: ${$('input[name="bedah2"]').val() || '-'}</td>
+                        <td class="label">Perawat Instrumen</td><td>: ${$('input[name="perawat"]').val() || '-'}</td>
                     </tr>
                 </table>
 
@@ -744,7 +802,7 @@
                 printHtml += `
                     <div class="print-dpjp-block">
                         <div class="print-dpjp-title">
-                            OPERATOR: ${dpjpName}
+                            OPERATOR: ${dpjpName || '-'}
                         </div>
                         
                         <div style="font-weight: bold; margin-bottom: 5px;">URAIAN PEMBEDAHAN:</div>
@@ -768,7 +826,7 @@
                             <div class="qr-item">
                                 <div style="font-size: 12px; margin-bottom: 5px;">Tanda Tangan Digital</div>
                                 <div id="print-qr-${qrCounter}" style="border: 1px solid #000; padding: 5px; display: inline-block;"></div>
-                                <div style="font-size: 12px; margin-top: 5px; font-weight: bold;">${dpjpName.split(': ').pop()}</div>
+                                <div style="font-size: 12px; margin-top: 5px; font-weight: bold;">${dpjpName ? dpjpName.split(': ').pop() : '-'}</div>
                             </div>
                         </div>
                     </div>
@@ -784,7 +842,7 @@
             $('#sets .set-card').each(function() {
                 let dpjpName = $(this).find('.opsel option:selected').text();
                 // Ambil nama asli dokter (hapus "DPJP Utama: ")
-                let cleanName = dpjpName.split(': ').pop();
+                let cleanName = dpjpName ? dpjpName.split(': ').pop() : 'Unknown';
                 
                 new QRCode(document.getElementById("print-qr-" + qrCounter), {
                     text: "TTD-DIGITAL:" + cleanName,
@@ -802,6 +860,30 @@
                 window.print();
             }, 500);
         }
+
+        // --- Document Ready ---
+        $(function () {
+            initRadios();
+            
+            $('#mulai, #selesai').bind('change keyup', dur);
+            
+            $('input[name=flag_syaraf]').change(function () {
+                setHidden($('#jenisSyaraf'), $('input[name=flag_syaraf]:checked').val() != 'Ya');
+            });
+            $('input[name=penggunaan_implan]').change(function () {
+                var ya = $('input[name=penggunaan_implan]:checked').val() == 'Ya';
+                setHidden($('#depImplan'), !ya);
+                var $f = $('#depImplan input');
+                if (ya) { $f.removeAttr('disabled'); } else { $f.attr('disabled', 'disabled').val(''); }
+            });
+
+            $('#addDpjp').click(function () { addDpjp(); });
+            $('#addSet').click(function () { if (sets().length < rows().length) { addSet(freeUid()); } });
+            $sets.delegate('.opsel', 'change', function () { $(this).closest('.set-card').data('opUid', $(this).val()); });
+            
+            // Load preset on first load
+            loadPreset();
+        });
     </script>
 </body>
 </html>
