@@ -176,56 +176,61 @@
         .set-card .section-body { background: #fff; }
 
         /* =========================================
-           CSS UNTUK TAMPILAN CETAK (PRINT)
+           CSS UNTUK TAMPILAN CETAK (PRINT) - DIPERBARUI
            ========================================= */
         #print-area { display: none; }
 
         @media print {
             @page { size: A4; margin: 1.5cm; }
-            body { background: #fff; padding: 0; font-family: 'Times New Roman', Times, serif; }
+            body { background: #fff; padding: 0; font-family: 'Times New Roman', Times, serif; color: #000; }
             .form-container, .action-bar { display: none !important; }
-            #print-area { display: block !important; color: #000; }
+            #print-area { display: block !important; }
             
             /* Kop Surat */
-            .kop-surat { display: flex; align-items: center; border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
-            .kop-logo { width: 80px; height: 80px; border: 1px solid #000; text-align: center; line-height: 80px; font-weight: bold; margin-right: 15px; }
+            .kop-surat { display: flex; align-items: center; border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
+            .kop-logo { width: 70px; height: 70px; border: 1px solid #000; display: flex; justify-content: center; align-items: center; font-weight: bold; margin-right: 15px; font-size: 12px; text-align: center;}
             .kop-text { flex: 1; text-align: center; }
-            .kop-text h1 { margin: 0; font-size: 18px; font-weight: normal; }
-            .kop-text h2 { margin: 0; font-size: 22px; font-weight: bold; }
-            .kop-text h3 { margin: 0; font-size: 16px; font-weight: normal; }
+            .kop-text h1 { margin: 0; font-size: 16px; font-weight: normal; }
+            .kop-text h2 { margin: 0; font-size: 20px; font-weight: bold; }
+            .kop-text h3 { margin: 0; font-size: 14px; font-weight: normal; }
             .kop-text p { margin: 2px 0 0 0; font-size: 12px; }
             
             /* Judul */
-            .print-title { text-align: center; font-size: 18px; font-weight: bold; text-decoration: underline; margin-bottom: 20px; }
+            .print-title { text-align: center; font-size: 16px; font-weight: bold; text-decoration: underline; margin-bottom: 15px; }
 
             /* Tabel Data */
-            .print-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 14px; }
-            .print-table td { padding: 4px 8px; vertical-align: top; }
-            .print-table .label { width: 25%; font-weight: bold; }
+            .print-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 13px; line-height: 1.4; }
+            .print-table td { padding: 3px 4px; vertical-align: top; }
+            .print-table .label { width: 18%; font-weight: bold; }
+            .print-table .colon { width: 2%; text-align: center; }
+            .print-table .value { width: 30%; }
             
-            /* Box Uraian */
-            .print-box { border: 1px solid #000; padding: 10px; min-height: 80px; font-size: 14px; margin-bottom: 15px; white-space: pre-wrap; }
-            
+            /* Divider khusus */
+            .section-divider { border-top: 2px solid #000; border-bottom: 1px solid #000; padding: 10px 0; margin-bottom: 15px; }
+
             /* Area DPJP Dinamis */
             .print-dpjp-block { 
                 page-break-inside: avoid; 
-                margin-bottom: 30px; 
-                border: 1px solid #666; 
+                margin-bottom: 20px; 
+                border: 1px solid #000; 
                 padding: 15px; 
             }
             .print-dpjp-title {
-                background: #eee;
-                padding: 8px;
                 font-weight: bold;
-                font-size: 15px;
-                border-bottom: 1px solid #666;
-                margin: -15px -15px 15px -15px;
+                font-size: 14px;
+                border-bottom: 1px solid #000;
+                padding-bottom: 5px;
+                margin-bottom: 10px;
+                text-transform: uppercase;
             }
+            /* Box Uraian */
+            .print-box { border: 1px solid #ccc; padding: 10px; min-height: 60px; font-size: 13px; margin-bottom: 15px; white-space: pre-wrap; background-color: #fafafa; }
 
             /* QR Code Area */
-            .qr-container { display: flex; justify-content: flex-end; margin-top: 15px; }
-            .qr-item { text-align: center; font-size: 12px; }
-            .qr-item img, .qr-item canvas { width: 70px; height: 70px; margin-bottom: 5px; }
+            .signature-block { display: flex; justify-content: flex-end; margin-top: 20px; }
+            .signature-content { text-align: center; font-size: 12px; min-width: 200px; }
+            .signature-content img, .signature-content canvas { width: 75px; height: 75px; margin: 10px auto; }
+            .signature-name { font-weight: bold; text-decoration: underline; margin-top: 5px; }
         }
     </style>
 </head>
@@ -238,7 +243,7 @@
         </div>
         
         <form id="form-data" onsubmit="return false">
-            <!-- INFORMASI PASIEN (Full Width) -->
+            <!-- INFORMASI PASIEN -->
             <div class="patient-card">
                 <div class="patient-item"><dt>No. RM</dt><dd>257076</dd></div>
                 <div class="patient-item"><dt>Nama Pasien</dt><dd>DIAN ADI</dd></div>
@@ -251,11 +256,8 @@
             <!-- LAYOUT 2 KOLOM UTAMA -->
             <div class="form-main-grid">
                 
-                <!-- ======================================
-                     KOLOM KIRI (Section 1, 2, 3)
-                     ====================================== -->
+                <!-- KOLOM KIRI -->
                 <div class="form-col-left">
-                    
                     <!-- SECTION 1: TIM OPERASI -->
                     <div class="section">
                         <div class="section-header">1. Tim Operasi</div>
@@ -394,7 +396,6 @@
                                     </div>
                                 </div>
                                 
-                                <!-- Detail Implan -->
                                 <div class="col-2" id="depImplan" style="display: none;">
                                     <div class="grid grid-2">
                                         <div class="form-group"><label>Jenis Implan</label><input type="text" name="jenis_implan" disabled></div>
@@ -404,23 +405,17 @@
                             </div>
                         </div>
                     </div>
-
                 </div> <!-- End of Left Column -->
 
-                <!-- ======================================
-                     KOLOM KANAN (Section 4 / Dynamic Sets)
-                     ====================================== -->
+                <!-- KOLOM KANAN -->
                 <div class="form-col-right">
-                    <!-- DYNAMIC SETS (URAIAN PER DPJP) -->
                     <div id="sets"></div>
                     <div style="margin-bottom: 30px;">
                         <button type="button" class="btn btn-primary" id="addSet" style="display:none; width: 100%; font-size: 16px; padding: 16px;">+ Tambah Set Uraian Pembedahan Operator Lain</button>
                     </div>
-                </div> <!-- End of Right Column -->
+                </div>
+            </div>
 
-            </div> <!-- End of 2 Column Layout -->
-
-            <!-- STICKY BOTTOM ACTION BAR -->
             <div class="action-bar">
                 <button type="button" class="btn btn-outline" onclick="history.back()">Batal</button>
                 <button type="button" class="btn btn-primary" id="btnSimpan" style="padding: 12px 48px; font-size: 16px;" onclick="generatePrintView()">SIMPAN & CETAK</button>
@@ -428,9 +423,6 @@
         </form>
     </div>
 
-    <!-- ==============================================
-         AREA CETAK (DIISI OTOMATIS OLEH JAVASCRIPT)
-         ============================================== -->
     <div id="print-area"></div>
 
     <script>
@@ -441,7 +433,6 @@
             return $('<div/>').text(s === null || s === undefined ? '' : s).html().replace(/"/g, '&quot;');
         }
 
-        // --- Custom Radio Buttons ---
         function initRadios() {
             $('.radio-group').each(function() {
                 var $group = $(this);
@@ -459,7 +450,6 @@
             });
         }
 
-        // --- Waktu Bedah ---
         function toMin(t) { return parseInt(t.slice(0, 2), 10) * 60 + parseInt(t.slice(3, 5), 10); }
         function dur() {
             var a = $('#mulai').val(), b = $('#selesai').val();
@@ -469,12 +459,10 @@
             $('#dur').text(d + ' Menit');
         }
 
-        // --- Toggle ---
         function setHidden($el, hide) {
             if (hide) { $el.hide(); } else { $el.show(); }
         }
 
-        // --- DPJP ---
         function rows() { return $dlist.children('.dpjp-row'); }
         function sets() { return $sets.children('.set-card'); }
         function lblOf(i) { return i == 0 ? 'DPJP Utama' : 'DPJP ' + (i + 1); }
@@ -516,7 +504,6 @@
             renumberSets();
         }
 
-        // --- Set Uraian ---
         function chips(name, val) {
             var isY = val == 'Ya';
             return '<div class="radio-group">' +
@@ -621,9 +608,7 @@
             if (sets().length >= $r.length) { $b.prop('disabled', true).css('opacity', 0.5); } else { $b.prop('disabled', false).css('opacity', 1); }
         }
 
-        // --- FUNGSI LOAD PRESET DATA SAMPEL ---
         function loadPreset() {
-            // 1. Reset form
             $('input[type="text"], input[type="number"], textarea').val('');
             $('input[type="date"], input[type="time"]').val('');
             $('.radio-group').each(function() {
@@ -633,10 +618,8 @@
             $dlist.empty(); $sets.empty();
             uid = 0; sid = 0;
 
-            // 2. Isi Data Dasar & Klasifikasi
             $('input[name="tanggal_bedah"]').val('2026-10-15');
             $('input[name="jam_mulai"]').val('08:00');
-            // Sengaja dikosongkan agar saat cetak menggunakan waktu random
             $('input[name="jam_selesai"]').val(''); 
             dur();
             
@@ -647,7 +630,6 @@
             
             $('select[name="jenis_operasi"]').val('Elektif');
             
-            // Pilih Radio Utama (Klasifikasi)
             $('input[name="golongan_operasi"][value="Besar"]').prop('checked', true).closest('.radio-label').addClass('selected');
             $('input[name="jenis_anestesi"][value="Umum"]').prop('checked', true).closest('.radio-label').addClass('selected');
             $('input[name="kirim_untuk"][value="PA"]').prop('checked', true).closest('.radio-label').addClass('selected');
@@ -655,7 +637,6 @@
             $('input[name="penggunaan_implan"][value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
             $('#depImplan').hide();
 
-            // 3. Isi Tim Medis
             $('input[name="asisten"]').val('dr. Andi Wijaya, Sp.An');
             $('input[name="asisten2"]').val('Ns. Budi Santoso');
             $('input[name="bedah2"]').val('Ns. Citra Dewi');
@@ -663,13 +644,11 @@
             $('input[name="instrumen"]').val('Ns. Fani Rahma');
             $('input[name="perawat_sirkuler"]').val('Ns. Gita Puspita');
 
-            // 4. Tambah DPJP
             var dpjp1 = { id: "D001", nama: "dr. Mutya Dyah Arumsari, Sp.A" };
             var dpjp2 = { id: "D002", nama: "dr. Budi Setiawan, Sp.KJ" };
             addDpjp(dpjp1);
             addDpjp(dpjp2);
 
-            // 5. Tambah Set Uraian 1 (Untuk DPJP 1)
             var uid1 = rows().eq(0).attr('data-uid');
             var $set1 = addSet(uid1, {
                 uraian: "Tindakan aseptik dan antiseptik daerah operasi. Insisi median sternotomy. Heparinisasi. Kanulasi aorta dan vena cava inferior. Kardiotomi. Identifikasi target vessel. Pengambilan graft LIMA dan SVG. Anastomosis LIMA ke LAD, SVG ke RCA, SVG ke LCx. Protamin. Pemasangan wire sternum, drain mediastinum dan pleural. Penutupan luka lapis demi lapis.",
@@ -682,7 +661,6 @@
             $set1.find('input[name$="[drain]"][value="Ya"]').prop('checked', true).closest('.radio-label').addClass('selected');
             syncSet($set1);
 
-            // 6. Tambah Set Uraian 2 (Untuk DPJP 2)
             var uid2 = rows().eq(1).attr('data-uid');
             var $set2 = addSet(uid2, {
                 uraian: "Membantu tindakan operator utama. Bertanggung jawab pada area luka operasi, persiapan pengambilan vena safena, dan penjahitan luka operasi (suturing).",
@@ -706,12 +684,12 @@
         }
 
         // ==============================================
-        // FUNGSI UNTUK GENERATE TAMPILAN CETAK DINAMIS
+        // FUNGSI GENERATE CETAK (DIPERBARUI)
         // ==============================================
         function generatePrintView() {
             // --- LOGIKA HITUNG JAM SELESAI & DURASI ---
-            let startTimeStr = $('#mulai').val() || "08:00"; // Default jika kosong
-            let endTimeStr = $('#selesai').val(); // Bisa kosong
+            let startTimeStr = $('#mulai').val() || "08:00";
+            let endTimeStr = $('#selesai').val();
             
             let startParts = startTimeStr.split(':');
             let startTotalMin = (parseInt(startParts[0], 10) * 60) + parseInt(startParts[1], 10);
@@ -720,23 +698,19 @@
             let durationMin = 0;
 
             if (endTimeStr && endTimeStr.trim() !== "") {
-                // Jika form diisi, pakai nilai form
                 let endParts = endTimeStr.split(':');
                 endTotalMin = (parseInt(endParts[0], 10) * 60) + parseInt(endParts[1], 10);
-                if (endTotalMin < startTotalMin) endTotalMin += 1440; // Jika lewat tengah malam
+                if (endTotalMin < startTotalMin) endTotalMin += 1440; 
                 durationMin = endTotalMin - startTotalMin;
             } else {
-                // Jika form KOSONG, buat random +1 sampai 3 jam (60 - 180 menit)
                 durationMin = Math.floor(Math.random() * 121) + 60;
                 endTotalMin = startTotalMin + durationMin;
             }
 
-            // Format ulang ke HH:MM
             let endH = Math.floor(endTotalMin / 60) % 24;
             let endM = endTotalMin % 60;
             let calcEndTime = String(endH).padStart(2, '0') + ':' + String(endM).padStart(2, '0');
 
-            // Format Lama Operasi (X Jam Y Menit)
             let durH = Math.floor(durationMin / 60);
             let durM = durationMin % 60;
             let calcDuration = "";
@@ -760,59 +734,64 @@
 
                 <table class="print-table">
                     <tr>
-                        <td class="label">No. Rekam Medis</td><td>: 257076</td>
-                        <td class="label">Nama Pasien</td><td>: DIAN ADI</td>
+                        <td class="label">No. Rekam Medis</td><td class="colon">:</td><td class="value">257076</td>
+                        <td class="label">Nama Pasien</td><td class="colon">:</td><td class="value">DIAN ADI</td>
                     </tr>
                     <tr>
-                        <td class="label">Tanggal Lahir / Umur</td><td>: 12/04/1964 (62 Tahun)</td>
-                        <td class="label">No. Registrasi</td><td>: 2610140012</td>
+                        <td class="label">Tgl Lahir / Umur</td><td class="colon">:</td><td class="value">12/04/1964 (62 Tahun)</td>
+                        <td class="label">No. Registrasi</td><td class="colon">:</td><td class="value">2610140012</td>
                     </tr>
                     <tr>
-                        <td class="label">Ruang Rawat</td><td>: Bed Fisioterapi</td>
-                        <td class="label">Tanggal Masuk</td><td>: 14/10/2026</td>
+                        <td class="label">Ruang Rawat</td><td class="colon">:</td><td class="value">Bed Fisioterapi</td>
+                        <td class="label">Tanggal Masuk</td><td class="colon">:</td><td class="value">14/10/2026</td>
                     </tr>
                 </table>
 
-                <table class="print-table" style="margin-top: 10px; border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 10px 0;">
-                    <tr>
-                        <td class="label" style="width: 15%;">Tanggal Operasi</td><td style="width: 35%;">: ${$('#tgl').val() || '-'}</td>
-                        <td class="label" style="width: 15%;">Jam Operasi Dimulai</td><td>: ${startTimeStr}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Jam Operasi Selesai</td><td>: ${calcEndTime}</td>
-                        <td class="label">Lama Operasi Berlangsung</td><td>: ${calcDuration}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Diagnosis Pra Bedah</td><td colspan="3">: ${$('textarea[name="diagnosis_pra_bedah"]').val()}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Diagnosis Pasca Bedah</td><td colspan="3">: ${$('textarea[name="diagnosis_pasca_bedah"]').val()}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Tindakan Operasi</td><td colspan="3">: ${$('textarea[name="nama_operasi"]').val()}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Jenis Anestesi</td><td>: ${$('input[name="jenis_anestesi"]:checked').val() || '-'}</td>
-                        <td class="label">Klasifikasi</td><td>: ${$('select[name="jenis_operasi"]').val() || '-'} (${$('input[name="golongan_operasi"]:checked').val() || '-'})</td>
-                    </tr>
-                </table>
+                <div class="section-divider">
+                    <table class="print-table" style="margin-bottom: 0;">
+                        <tr>
+                            <td class="label" style="width:20%;">Tanggal Operasi</td><td class="colon">:</td><td class="value" style="width:30%;">${$('#tgl').val() || '-'}</td>
+                            <td class="label" style="width:20%;">Jam Dimulai</td><td class="colon">:</td><td class="value">${startTimeStr}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Jam Selesai</td><td class="colon">:</td><td class="value">${calcEndTime}</td>
+                            <td class="label">Lama Operasi</td><td class="colon">:</td><td class="value">${calcDuration}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Diagnosis Pra Bedah</td><td class="colon">:</td><td colspan="4">${$('textarea[name="diagnosis_pra_bedah"]').val()}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Diagnosis Pasca Bedah</td><td class="colon">:</td><td colspan="4">${$('textarea[name="diagnosis_pasca_bedah"]').val()}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Tindakan Operasi</td><td class="colon">:</td><td colspan="4">${$('textarea[name="nama_operasi"]').val()}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Jenis Anestesi</td><td class="colon">:</td><td class="value">${$('input[name="jenis_anestesi"]:checked').val() || '-'}</td>
+                            <td class="label">Klasifikasi</td><td class="colon">:</td><td class="value">${$('select[name="jenis_operasi"]').val() || '-'} (${$('input[name="golongan_operasi"]:checked').val() || '-'})</td>
+                        </tr>
+                    </table>
+                </div>
                 
-                <div style="font-weight: bold; margin: 15px 0 10px 0; font-size: 15px;">TIM MEDIS:</div>
+                <div style="font-weight: bold; margin: 15px 0 10px 0; font-size: 14px; text-decoration: underline;">TIM MEDIS:</div>
                 <table class="print-table" style="margin-bottom: 20px;">
                     <tr>
-                        <td class="label" style="width: 20%;">Dokter Anestesi</td><td style="width: 30%;">: ${$('input[name="asisten"]').val() || '-'}</td>
-                        <td class="label" style="width: 20%;">Asisten I</td><td>: ${$('input[name="asisten2"]').val() || '-'}</td>
+                        <td class="label" style="width:20%;">Dokter Anestesi</td><td class="colon">:</td><td class="value" style="width:30%;">${$('input[name="asisten"]').val() || '-'}</td>
+                        <td class="label" style="width:20%;">Asisten I</td><td class="colon">:</td><td class="value">${$('input[name="asisten2"]').val() || '-'}</td>
                     </tr>
                     <tr>
-                        <td class="label">Asisten II</td><td>: ${$('input[name="bedah2"]').val() || '-'}</td>
-                        <td class="label">Perawat Instrumen</td><td>: ${$('input[name="perawat"]').val() || '-'}</td>
+                        <td class="label">Asisten II</td><td class="colon">:</td><td class="value">${$('input[name="bedah2"]').val() || '-'}</td>
+                        <td class="label">Perawat Instrumen</td><td class="colon">:</td><td class="value">${$('input[name="perawat"]').val() || '-'}</td>
                     </tr>
                 </table>
-
-                <hr style="border: 1px solid #000; margin-bottom: 20px;">
             `;
 
             let qrCounter = 0;
+            
+            // Ambil tanggal hari ini untuk TTD
+            let today = new Date();
+            let dateString = today.getDate() + ' ' + ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][today.getMonth()] + ' ' + today.getFullYear();
+
             $('#sets .set-card').each(function() {
                 let $set = $(this);
                 let dpjpName = $set.find('.opsel option:selected').text();
@@ -832,28 +811,30 @@
                             OPERATOR: ${dpjpName || '-'}
                         </div>
                         
-                        <div style="font-weight: bold; margin-bottom: 5px;">URAIAN PEMBEDAHAN:</div>
+                        <div style="font-weight: bold; margin-bottom: 5px; font-size: 13px;">URAIAN PEMBEDAHAN:</div>
                         <div class="print-box">${uraian || '-'}</div>
                         
-                        <table class="print-table">
+                        <table class="print-table" style="margin-bottom: 0;">
                             <tr>
-                                <td class="label" style="width: 20%;">Komplikasi</td><td style="width: 30%;">: ${komp} ${kompKet ? '- ' + kompKet : ''}</td>
-                                <td class="label" style="width: 20%;">Patologi</td><td>: ${patol} ${jenisJaringan ? '- ' + jenisJaringan : ''}</td>
+                                <td class="label">Komplikasi</td><td class="colon">:</td><td class="value">${komp} ${kompKet ? '<br><i>Ket: ' + kompKet + '</i>' : ''}</td>
+                                <td class="label">Patologi</td><td class="colon">:</td><td class="value">${patol} ${jenisJaringan ? '<br><i>Ket: ' + jenisJaringan + '</i>' : ''}</td>
                             </tr>
                             <tr>
-                                <td class="label">Perdarahan</td><td>: ${perdarahan || 0} cc</td>
-                                <td class="label">Transfusi</td><td>: ${transfusi || 0} cc</td>
+                                <td class="label">Perdarahan</td><td class="colon">:</td><td class="value">${perdarahan || 0} cc</td>
+                                <td class="label">Transfusi</td><td class="colon">:</td><td class="value">${transfusi || 0} cc</td>
                             </tr>
                             <tr>
-                                <td class="label">Pemakaian Drain</td><td colspan="3">: ${drain}</td>
+                                <td class="label">Pemakaian Drain</td><td class="colon">:</td><td colspan="4">${drain}</td>
                             </tr>
                         </table>
                         
-                        <div class="qr-container">
-                            <div class="qr-item">
-                                <div style="font-size: 12px; margin-bottom: 5px;">Tanda Tangan Digital</div>
-                                <div id="print-qr-${qrCounter}" style="border: 1px solid #000; padding: 5px; display: inline-block;"></div>
-                                <div style="font-size: 12px; margin-top: 5px; font-weight: bold;">${dpjpName ? dpjpName.split(': ').pop() : '-'}</div>
+                        <div class="signature-block">
+                            <div class="signature-content">
+                                <div>Jambi, ${dateString}</div>
+                                <div>Operator Bedah,</div>
+                                <div id="print-qr-${qrCounter}" style="display: flex; justify-content: center;"></div>
+                                <div class="signature-name">${dpjpName ? dpjpName.split(': ').pop() : '-'}</div>
+                                <div style="font-size:10px; color:#666;">Ditandatangani secara elektronik</div>
                             </div>
                         </div>
                     </div>
@@ -870,8 +851,8 @@
                 
                 new QRCode(document.getElementById("print-qr-" + qrCounter), {
                     text: "TTD-DIGITAL:" + cleanName,
-                    width: 70,
-                    height: 70,
+                    width: 75,
+                    height: 75,
                     colorDark : "#000000",
                     colorLight : "#ffffff",
                     correctLevel : QRCode.CorrectLevel.M
