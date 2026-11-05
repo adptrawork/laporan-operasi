@@ -45,27 +45,40 @@
 
         .form-container {
             width: 100%;
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
         }
 
-        /* --- SISTEM GRID RESPONSIF --- */
-        .grid { display: grid; gap: 20px; align-items: start; }
-        .grid-2 { grid-template-columns: repeat(2, 1fr); }
-        .grid-3 { grid-template-columns: repeat(3, 1fr); }
-        .grid-4 { grid-template-columns: repeat(4, 1fr); }
-        .col-2 { grid-column: span 2; }
-        .col-3 { grid-column: span 3; }
-        .col-4 { grid-column: span 4; }
-
-        @media (max-width: 1024px) {
-            .grid-4 { grid-template-columns: repeat(2, 1fr); }
-            .grid-3 { grid-template-columns: repeat(2, 1fr); }
-            .col-3, .col-4 { grid-column: span 2; }
+        /* --- LAYOUT 2 KOLOM UTAMA --- */
+        .form-main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: start;
+            margin-bottom: 24px;
         }
+        .form-col-left {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .form-col-right {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        @media (max-width: 1100px) {
+            .form-main-grid { grid-template-columns: 1fr; }
+        }
+
+        /* --- SISTEM GRID INTERNAL --- */
+        .grid { display: grid; gap: 16px; align-items: start; }
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .col-2 { grid-column: span 2; }
+        
         @media (max-width: 768px) {
-            .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
-            [class*="col-"] { grid-column: span 1 !important; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .col-2 { grid-column: span 1 !important; }
         }
 
         .patient-card {
@@ -86,7 +99,6 @@
             background: var(--bg-card);
             border: 2px solid var(--border-color);
             border-radius: var(--radius);
-            margin-bottom: 24px;
             overflow: hidden;
         }
         .section-header {
@@ -226,12 +238,11 @@
     <div class="form-container">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
             <h1 style="color: var(--primary); margin: 0; font-size: 24px;">Laporan Operasi</h1>
-            <!-- TOMBOL PRESET DATA SAMPEL -->
             <button type="button" class="btn btn-outline" style="border-color: var(--primary); color: var(--primary);" onclick="loadPreset()">✨ Muat Data Sampel (Preset)</button>
         </div>
         
         <form id="form-data" onsubmit="return false">
-            <!-- INFORMASI PASIEN -->
+            <!-- INFORMASI PASIEN (Full Width) -->
             <div class="patient-card">
                 <div class="patient-item"><dt>No. RM</dt><dd>257076</dd></div>
                 <div class="patient-item"><dt>Nama Pasien</dt><dd>DIAN ADI</dd></div>
@@ -241,189 +252,181 @@
                 <div class="patient-item"><dt>Ruang Rawat</dt><dd>Bed Fisioterapi</dd></div>
             </div>
 
-            <!-- SECTION 1: TIM OPERASI -->
-            <div class="section">
-                <div class="section-header">1. Tim Operasi</div>
-                <div class="section-body">
-                    <div class="grid grid-3">
-                        <div class="col-3">
-                            <label class="required">Daftar DPJP Bedah / Operator</label>
-                            <div id="dlist" class="grid grid-2" style="margin-top: 10px;"></div>
-                            <button type="button" class="btn btn-outline" id="addDpjp" style="margin-top: 12px;">+ Tambah DPJP</button>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Dokter Anestesi</label>
-                            <input type="text" name="asisten" value="">
-                        </div>
-                        <div class="form-group">
-                            <label>Asisten I</label>
-                            <input type="text" name="asisten2" value="">
-                        </div>
-                        <div class="form-group">
-                            <label>Asisten II</label>
-                            <input type="text" name="bedah2" value="">
-                        </div>
-                        <div class="form-group">
-                            <label>Perawat Instrumen 1</label>
-                            <input type="text" name="perawat" value="">
-                        </div>
-                        <div class="form-group">
-                            <label>Perawat Instrumen 2</label>
-                            <input type="text" name="instrumen" value="">
-                        </div>
-                        <div class="form-group">
-                            <label>Perawat Sirkuler</label>
-                            <input type="text" name="perawat_sirkuler" value="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION 2: DIAGNOSIS & WAKTU -->
-            <div class="section">
-                <div class="section-header">2. Diagnosis & Waktu Pelaksanaan</div>
-                <div class="section-body">
-                    <div class="grid grid-4">
-                        <div class="form-group col-2">
-                            <label>Diagnosis Pra Bedah</label>
-                            <textarea name="diagnosis_pra_bedah"></textarea>
-                        </div>
-                        <div class="form-group col-2">
-                            <label>Diagnosis Pasca Bedah</label>
-                            <textarea name="diagnosis_pasca_bedah"></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="required">Tanggal Bedah</label>
-                            <input type="date" name="tanggal_bedah" id="tgl" value="">
-                        </div>
-                        <div class="form-group">
-                            <label class="required">Jam Mulai</label>
-                            <input type="time" name="jam_mulai" id="mulai" value="">
-                        </div>
-                        <div class="form-group">
-                            <label class="required">Jam Selesai</label>
-                            <input type="time" name="jam_selesai" id="selesai" value="">
-                        </div>
-                        <div class="form-group">
-                            <label>Total Waktu</label>
-                            <div class="duration-box"><span id="dur">-</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION 3: JENIS OPERASI -->
-            <div class="section">
-                <div class="section-header">3. Klasifikasi Jenis Operasi</div>
-                <div class="section-body">
-                    <div class="grid grid-4">
-                        <div class="form-group col-4">
-                            <label>Nama Macam Operasi</label>
-                            <textarea name="nama_operasi"></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="required">Klasifikasi</label>
-                            <select name="jenis_operasi">
-                                <option value="Emergency">Emergency</option>
-                                <option value="Poliklinik">Poliklinik</option>
-                                <option value="Elektif">Elektif</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-3">
-                            <label class="required">Golongan Operasi</label>
-                            <div class="radio-group">
-                                <label class="radio-label"><input type="radio" name="golongan_operasi" value="Kecil"> Kecil</label>
-                                <label class="radio-label"><input type="radio" name="golongan_operasi" value="Sedang"> Sedang</label>
-                                <label class="radio-label"><input type="radio" name="golongan_operasi" value="Besar"> Besar</label>
-                                <label class="radio-label"><input type="radio" name="golongan_operasi" value="Khusus"> Khusus</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group col-4">
-                            <label>Jaringan yang Dieksisi</label>
-                            <textarea name="jaringan_eksisi" style="min-height: 60px;"></textarea>
-                        </div>
-
-                        <!-- Baris Pilihan Ganda -->
-                        <div class="form-group col-2">
-                            <label class="required">Jenis Anestesi</label>
-                            <div class="radio-group">
-                                <label class="radio-label"><input type="radio" name="jenis_anestesi" value="Lokal"> Lokal</label>
-                                <label class="radio-label"><input type="radio" name="jenis_anestesi" value="Umum"> Umum</label>
-                                <label class="radio-label"><input type="radio" name="jenis_anestesi" value="Regional"> Regional</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="required">Kanker?</label>
-                            <div class="radio-group">
-                                <label class="radio-label val-y"><input type="radio" name="flag_kanker" value="Ya"> Ya</label>
-                                <label class="radio-label val-n"><input type="radio" name="flag_kanker" value="Tidak"> Tidak</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="required">Syaraf?</label>
-                            <div class="radio-group">
-                                <label class="radio-label val-y"><input type="radio" name="flag_syaraf" value="Ya"> Ya</label>
-                                <label class="radio-label val-n"><input type="radio" name="flag_syaraf" value="Tidak"> Tidak</label>
-                            </div>
-                        </div>
-
-                        <!-- Baris Pilihan Ganda 2 -->
-                        <div class="form-group col-2" id="jenisSyaraf">
-                            <label>Jenis Syaraf</label>
-                            <div class="radio-group">
-                                <label class="radio-label"><input type="radio" name="jenis_syaraf" value="Stroke"> Stroke</label>
-                                <label class="radio-label"><input type="radio" name="jenis_syaraf" value="Non Stroke"> Non Stroke</label>
-                            </div>
-                        </div>
-                        <div class="form-group col-2">
-                            <label>Dikirim Spesimen?</label>
-                            <div class="radio-group">
-                                <label class="radio-label"><input type="radio" name="kirim_untuk" value="PA"> PA</label>
-                                <label class="radio-label"><input type="radio" name="kirim_untuk" value="Kultur"> Kultur</label>
-                            </div>
-                        </div>
-
-                        <!-- Baris Pilihan Ganda 3 -->
-                        <div class="form-group col-2">
-                            <label>Pemeriksaan Penunjang?</label>
-                            <div class="radio-group">
-                                <label class="radio-label val-n"><input type="radio" name="pemeriksaan" value="Tidak"> Tidak</label>
-                                <label class="radio-label val-y"><input type="radio" name="pemeriksaan" value="Ya"> Ya</label>
-                            </div>
-                        </div>
-                        <div class="form-group col-2">
-                            <label>Penggunaan Implan?</label>
-                            <div class="radio-group">
-                                <label class="radio-label val-y"><input type="radio" name="penggunaan_implan" value="Ya"> Ya</label>
-                                <label class="radio-label val-n"><input type="radio" name="penggunaan_implan" value="Tidak"> Tidak</label>
-                            </div>
-                        </div>
-                        
-                        <!-- Detail Implan -->
-                        <div class="col-4" id="depImplan" style="display: none;">
+            <!-- LAYOUT 2 KOLOM UTAMA -->
+            <div class="form-main-grid">
+                
+                <!-- ======================================
+                     KOLOM KIRI (Section 1, 2, 3)
+                     ====================================== -->
+                <div class="form-col-left">
+                    
+                    <!-- SECTION 1: TIM OPERASI -->
+                    <div class="section">
+                        <div class="section-header">1. Tim Operasi</div>
+                        <div class="section-body">
                             <div class="grid grid-2">
-                                <div class="form-group"><label>Jenis Implan</label><input type="text" name="jenis_implan" disabled></div>
-                                <div class="form-group"><label>Nomor Implan</label><input type="text" name="nomor_implan" disabled></div>
+                                <div class="col-2">
+                                    <label class="required">Daftar DPJP Bedah / Operator</label>
+                                    <div id="dlist" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;"></div>
+                                    <button type="button" class="btn btn-outline" id="addDpjp" style="margin-top: 12px;">+ Tambah DPJP</button>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Dokter Anestesi</label>
+                                    <input type="text" name="asisten" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Asisten I</label>
+                                    <input type="text" name="asisten2" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Asisten II</label>
+                                    <input type="text" name="bedah2" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Perawat Instrumen 1</label>
+                                    <input type="text" name="perawat" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Perawat Instrumen 2</label>
+                                    <input type="text" name="instrumen" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Perawat Sirkuler</label>
+                                    <input type="text" name="perawat_sirkuler" value="">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- DYNAMIC SETS (URAIAN PER DPJP) -->
-            <div id="sets"></div>
-            <div style="margin-bottom: 30px;">
-                <button type="button" class="btn btn-primary" id="addSet" style="display:none; width: 100%; font-size: 16px; padding: 16px;">+ Tambah Set Uraian Pembedahan Operator Lain</button>
-            </div>
+                    <!-- SECTION 2: DIAGNOSIS & WAKTU -->
+                    <div class="section">
+                        <div class="section-header">2. Diagnosis & Waktu Pelaksanaan</div>
+                        <div class="section-body">
+                            <div class="grid grid-2">
+                                <div class="form-group col-2">
+                                    <label>Diagnosis Pra Bedah</label>
+                                    <textarea name="diagnosis_pra_bedah"></textarea>
+                                </div>
+                                <div class="form-group col-2">
+                                    <label>Diagnosis Pasca Bedah</label>
+                                    <textarea name="diagnosis_pasca_bedah"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="required">Tanggal Bedah</label>
+                                    <input type="date" name="tanggal_bedah" id="tgl" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Total Waktu</label>
+                                    <div class="duration-box"><span id="dur">-</span></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="required">Jam Mulai</label>
+                                    <input type="time" name="jam_mulai" id="mulai" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label class="required">Jam Selesai</label>
+                                    <input type="time" name="jam_selesai" id="selesai" value="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 3: JENIS OPERASI -->
+                    <div class="section">
+                        <div class="section-header">3. Klasifikasi Jenis Operasi</div>
+                        <div class="section-body">
+                            <div class="grid grid-2">
+                                <div class="form-group col-2">
+                                    <label>Nama Macam Operasi</label>
+                                    <textarea name="nama_operasi"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="required">Klasifikasi</label>
+                                    <select name="jenis_operasi">
+                                        <option value="Emergency">Emergency</option>
+                                        <option value="Poliklinik">Poliklinik</option>
+                                        <option value="Elektif">Elektif</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="required">Jenis Anestesi</label>
+                                    <div class="radio-group">
+                                        <label class="radio-label"><input type="radio" name="jenis_anestesi" value="Lokal"> Lokal</label>
+                                        <label class="radio-label"><input type="radio" name="jenis_anestesi" value="Umum"> Umum</label>
+                                        <label class="radio-label"><input type="radio" name="jenis_anestesi" value="Regional"> Regional</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-2">
+                                    <label class="required">Golongan Operasi</label>
+                                    <div class="radio-group">
+                                        <label class="radio-label"><input type="radio" name="golongan_operasi" value="Kecil"> Kecil</label>
+                                        <label class="radio-label"><input type="radio" name="golongan_operasi" value="Sedang"> Sedang</label>
+                                        <label class="radio-label"><input type="radio" name="golongan_operasi" value="Besar"> Besar</label>
+                                        <label class="radio-label"><input type="radio" name="golongan_operasi" value="Khusus"> Khusus</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-2">
+                                    <label>Jaringan yang Dieksisi</label>
+                                    <textarea name="jaringan_eksisi" style="min-height: 60px;"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Dikirim Spesimen?</label>
+                                    <div class="radio-group">
+                                        <label class="radio-label"><input type="radio" name="kirim_untuk" value="PA"> PA</label>
+                                        <label class="radio-label"><input type="radio" name="kirim_untuk" value="Kultur"> Kultur</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Pemeriksaan Penunjang?</label>
+                                    <div class="radio-group">
+                                        <label class="radio-label val-n"><input type="radio" name="pemeriksaan" value="Tidak"> Tidak</label>
+                                        <label class="radio-label val-y"><input type="radio" name="pemeriksaan" value="Ya"> Ya</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-2">
+                                    <label>Penggunaan Implan?</label>
+                                    <div class="radio-group">
+                                        <label class="radio-label val-y"><input type="radio" name="penggunaan_implan" value="Ya"> Ya</label>
+                                        <label class="radio-label val-n"><input type="radio" name="penggunaan_implan" value="Tidak"> Tidak</label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Detail Implan -->
+                                <div class="col-2" id="depImplan" style="display: none;">
+                                    <div class="grid grid-2">
+                                        <div class="form-group"><label>Jenis Implan</label><input type="text" name="jenis_implan" disabled></div>
+                                        <div class="form-group"><label>Nomor Implan</label><input type="text" name="nomor_implan" disabled></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> <!-- End of Left Column -->
+
+                <!-- ======================================
+                     KOLOM KANAN (Section 4 / Dynamic Sets)
+                     ====================================== -->
+                <div class="form-col-right">
+                    <!-- DYNAMIC SETS (URAIAN PER DPJP) -->
+                    <div id="sets"></div>
+                    <div style="margin-bottom: 30px;">
+                        <button type="button" class="btn btn-primary" id="addSet" style="display:none; width: 100%; font-size: 16px; padding: 16px;">+ Tambah Set Uraian Pembedahan Operator Lain</button>
+                    </div>
+                </div> <!-- End of Right Column -->
+
+            </div> <!-- End of 2 Column Layout -->
 
             <!-- STICKY BOTTOM ACTION BAR -->
             <div class="action-bar">
                 <button type="button" class="btn btn-outline" onclick="history.back()">Batal</button>
-                <!-- Tombol Cetak diubah memanggil fungsi JS -->
                 <button type="button" class="btn btn-primary" id="btnSimpan" style="padding: 12px 48px; font-size: 16px;" onclick="generatePrintView()">SIMPAN & CETAK</button>
             </div>
         </form>
@@ -433,7 +436,6 @@
          AREA CETAK (DIISI OTOMATIS OLEH JAVASCRIPT)
          ============================================== -->
     <div id="print-area"></div>
-
 
     <script>
         var uid = 0, sid = 0;
@@ -455,7 +457,6 @@
                     $radio.on('change', function() {
                         $group.find('.radio-label').removeClass('selected');
                         $label.addClass('selected');
-                        // Trigger change for dynamic shows
                         $radio.trigger('customRadioChanged');
                     });
                 });
@@ -530,6 +531,7 @@
 
         function setHtml(n, s) {
             var p = 'set[' + n + ']';
+            // Di dalam set-card, kita ubah grid-4 menjadi grid-2 karena berada di kolom kanan yang lebih sempit
             return '<div class="set-card" data-sid="' + n + '">' +
                 '<div class="set-header" style="display:none;">' +
                     '<div style="display:flex; align-items:center; gap:12px;">' +
@@ -541,8 +543,8 @@
                 '<input type="hidden" name="' + p + '[urutan]" class="urutan">' +
                 
                 '<div class="section-body">' +
-                    '<div class="grid grid-4">' +
-                        '<div class="form-group col-4"><label class="required" style="font-size:18px; color:var(--primary);">Uraian Pembedahan</label><textarea name="' + p + '[uraian]" placeholder="Tuliskan detail tindakan..." style="min-height:100px;">' + esc(s.uraian) + '</textarea></div>' +
+                    '<div class="grid grid-2">' +
+                        '<div class="form-group col-2"><label class="required" style="font-size:18px; color:var(--primary);">Uraian Pembedahan</label><textarea name="' + p + '[uraian]" placeholder="Tuliskan detail tindakan..." style="min-height:100px;">' + esc(s.uraian) + '</textarea></div>' +
                         
                         '<div class="form-group col-2"><label>Apakah ada komplikasi?</label><div class="r-komp">' + chips(p + '[komp]', s.komp) + '</div></div>' +
                         '<div class="form-group col-2 dep-komp"><label>Keterangan Komplikasi</label><textarea name="' + p + '[komp_ket]" style="min-height: 60px;">' + esc(s.komp_ket) + '</textarea></div>' +
@@ -652,13 +654,9 @@
             // Pilih Radio Utama (Klasifikasi)
             $('input[name="golongan_operasi"][value="Besar"]').prop('checked', true).closest('.radio-label').addClass('selected');
             $('input[name="jenis_anestesi"][value="Umum"]').prop('checked', true).closest('.radio-label').addClass('selected');
-            $('input[name="flag_kanker"][value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
-            $('input[name="flag_syaraf"][value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
-            $('input[name="jenis_syaraf"][value="Non Stroke"]').prop('checked', true).closest('.radio-label').addClass('selected');
             $('input[name="kirim_untuk"][value="PA"]').prop('checked', true).closest('.radio-label').addClass('selected');
             $('input[name="pemeriksaan"][value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
             $('input[name="penggunaan_implan"][value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
-            $('#jenisSyaraf').hide();
             $('#depImplan').hide();
 
             // 3. Isi Tim Medis
@@ -683,7 +681,6 @@
                 patol: "Tidak", jenis_jaringan: "-",
                 perdarahan: "500", transfusi: "1000", drain: "Ya"
             });
-            // Pastikan radio di set 1 terpilih dengan benar secara visual
             $set1.find('.r-komp input[value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
             $set1.find('.r-patol input[value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
             $set1.find('input[name$="[drain]"][value="Ya"]').prop('checked', true).closest('.radio-label').addClass('selected');
@@ -702,7 +699,6 @@
             $set2.find('input[name$="[drain]"][value="Tidak"]').prop('checked', true).closest('.radio-label').addClass('selected');
             syncSet($set2);
 
-            // Reset Textarea uraian Set 2 (karena UI JS sebelumnya mengosongkan)
             $set2.find('textarea[name$="[uraian]"]').val("Membantu tindakan operator utama. Bertanggung jawab pada area luka operasi, persiapan pengambilan vena safena, dan penjahitan luka operasi (suturing).");
             $set2.find('textarea[name$="[komp_ket]"]').val("Aritmia saat tindakan (ditangani oleh anestesi)");
             $set2.find('input[name$="[jenis_jaringan]"]').val("Vena Safena");
@@ -841,7 +837,6 @@
             qrCounter = 0;
             $('#sets .set-card').each(function() {
                 let dpjpName = $(this).find('.opsel option:selected').text();
-                // Ambil nama asli dokter (hapus "DPJP Utama: ")
                 let cleanName = dpjpName ? dpjpName.split(': ').pop() : 'Unknown';
                 
                 new QRCode(document.getElementById("print-qr-" + qrCounter), {
@@ -867,9 +862,6 @@
             
             $('#mulai, #selesai').bind('change keyup', dur);
             
-            $('input[name=flag_syaraf]').change(function () {
-                setHidden($('#jenisSyaraf'), $('input[name=flag_syaraf]:checked').val() != 'Ya');
-            });
             $('input[name=penggunaan_implan]').change(function () {
                 var ya = $('input[name=penggunaan_implan]:checked').val() == 'Ya';
                 setHidden($('#depImplan'), !ya);
