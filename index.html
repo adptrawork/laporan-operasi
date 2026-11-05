@@ -43,9 +43,10 @@
             padding: 20px 20px 90px 20px;
         }
 
+        /* --- PERUBAHAN DISINI: FULL WIDTH --- */
         .form-container {
             width: 100%;
-            max-width: 1500px;
+            max-width: 100%; /* Menghapus batasan 1500px agar full layar */
             margin: 0 auto;
         }
 
@@ -53,19 +54,15 @@
         .form-main-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
+            gap: 32px; /* Gap diperlebar agar rapi di layar besar */
             align-items: start;
             margin-bottom: 24px;
         }
-        .form-col-left {
+        .form-col-left, .form-col-right {
             display: flex;
             flex-direction: column;
             gap: 24px;
-        }
-        .form-col-right {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
+            width: 100%;
         }
         @media (max-width: 1100px) {
             .form-main-grid { grid-template-columns: 1fr; }
@@ -174,7 +171,7 @@
             text-align: center; display: flex; align-items: center; justify-content: center; height: 100%;
         }
 
-        .set-card { border: 2px solid var(--primary); border-radius: var(--radius); margin-bottom: 24px; background: #f8fafc; overflow: hidden; }
+        .set-card { border: 2px solid var(--primary); border-radius: var(--radius); margin-bottom: 24px; background: #f8fafc; overflow: hidden; width: 100%;}
         .set-header { background: var(--primary); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; color: white; font-weight: 700; }
         .set-header select { width: auto; max-width: 400px; padding: 8px 12px; border: none; border-radius: 4px; }
         .set-card .section-body { background: #fff; }
@@ -531,7 +528,6 @@
 
         function setHtml(n, s) {
             var p = 'set[' + n + ']';
-            // Di dalam set-card, kita ubah grid-4 menjadi grid-2 karena berada di kolom kanan yang lebih sempit
             return '<div class="set-card" data-sid="' + n + '">' +
                 '<div class="set-header" style="display:none;">' +
                     '<div style="display:flex; align-items:center; gap:12px;">' +
@@ -713,7 +709,6 @@
         // FUNGSI UNTUK GENERATE TAMPILAN CETAK DINAMIS
         // ==============================================
         function generatePrintView() {
-            // 1. Siapkan Template Kop Surat & Info Global
             let printHtml = `
                 <div class="kop-surat">
                     <div class="kop-logo">LOGO<br>RSUD</div>
@@ -778,13 +773,11 @@
                 <hr style="border: 1px solid #000; margin-bottom: 20px;">
             `;
 
-            // 2. Looping setiap Set Uraian (DPJP) yang ada di form
             let qrCounter = 0;
             $('#sets .set-card').each(function() {
                 let $set = $(this);
                 let dpjpName = $set.find('.opsel option:selected').text();
                 
-                // Ambil data dari form
                 let uraian = $set.find('textarea[name$="[uraian]"]').val();
                 let komp = $set.find('.r-komp input:checked').val();
                 let kompKet = $set.find('.dep-komp textarea').val();
@@ -794,7 +787,6 @@
                 let transfusi = $set.find('input[name$="[transfusi]"]').val();
                 let drain = $set.find('input[name$="[drain]"]:checked').val();
 
-                // Susun blok HTML per DPJP
                 printHtml += `
                     <div class="print-dpjp-block">
                         <div class="print-dpjp-title">
@@ -830,10 +822,8 @@
                 qrCounter++;
             });
 
-            // 3. Masukkan HTML yang sudah disusun ke dalam div print-area
             $('#print-area').html(printHtml);
 
-            // 4. Generate QR Code untuk masing-masing blok DPJP
             qrCounter = 0;
             $('#sets .set-card').each(function() {
                 let dpjpName = $(this).find('.opsel option:selected').text();
@@ -850,18 +840,16 @@
                 qrCounter++;
             });
 
-            // 5. Panggil fungsi Print Browser setelah render selesai
             setTimeout(function() {
                 window.print();
             }, 500);
         }
 
-        // --- Document Ready ---
         $(function () {
             initRadios();
             
             $('#mulai, #selesai').bind('change keyup', dur);
-            
+
             $('input[name=penggunaan_implan]').change(function () {
                 var ya = $('input[name=penggunaan_implan]:checked').val() == 'Ya';
                 setHidden($('#depImplan'), !ya);
@@ -873,7 +861,6 @@
             $('#addSet').click(function () { if (sets().length < rows().length) { addSet(freeUid()); } });
             $sets.delegate('.opsel', 'change', function () { $(this).closest('.set-card').data('opUid', $(this).val()); });
             
-            // Load preset on first load
             loadPreset();
         });
     </script>
